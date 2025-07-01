@@ -2,8 +2,6 @@
 <?php
 include '../includes/header.php';
 ?>
-=======
->>>>>>> d0897cf318528445b7459743989c359a99791609
 
 <!DOCTYPE html>
 <html lang="en">
