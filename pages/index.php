@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 <?php
 include '../includes/header.php';
 ?>
+=======
+>>>>>>> d0897cf318528445b7459743989c359a99791609
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,11 +27,7 @@ include '../includes/header.php';
       <div class="row g-4">
         <div class="col-md-3 col-sm-6 mb-4">
           <div class="card h-100 shadow card-hover">
-            <img
-              src="https://via.placeholder.com/600x200.png?text=Herbal+Oils"
-              class="card-img-top"
-              alt="Herbal Oils"
-            />
+            <img src="../assets/images/oils3.jpeg" alt="Herbal oils" style="width: 304px; height: 200px; object-fit: cover;">
             <div class="card-body text-center">
               <h5 class="card-title">Herbal Oils</h5>
               <a href="#" class="btn btn-success btn-custom">View more</a>
@@ -37,11 +36,7 @@ include '../includes/header.php';
         </div>
         <div class="col-md-3 col-sm-6 mb-4">
           <div class="card h-100 shadow card-hover">
-            <img
-              src="https://via.placeholder.com/600x200.png?text=Ayurvedic+Teas"
-              class="card-img-top"
-              alt="Ayurvedic Teas"
-            />
+            <img src="../assets/images/ayurvedic tea.jpg" alt="Ayurvedic teas" style="width: 304px; height: 200px; object-fit: cover;">
             <div class="card-body text-center">
               <h5 class="card-title">Ayurvedic Teas</h5>
               <a href="#" class="btn btn-success btn-custom">View more</a>
@@ -50,11 +45,7 @@ include '../includes/header.php';
         </div>
         <div class="col-md-3 col-sm-6 mb-4">
           <div class="card h-100 shadow card-hover">
-            <img
-              src="https://via.placeholder.com/600x200.png?text=Herbal+Powders+%26+Capsules"
-              class="card-img-top"
-              alt="Herbal Powders & Capsules"
-            />
+           <img src="../assets/images/herbal powders.jpg" alt="Herbal Powders" style="width: 304px; height: 200px; object-fit: cover;">
             <div class="card-body text-center">
               <h5 class="card-title">Herbal Powders & Capsules</h5>
               <a href="#" class="btn btn-success btn-custom">View more</a>
@@ -63,11 +54,7 @@ include '../includes/header.php';
         </div>
         <div class="col-md-3 col-sm-6 mb-4">
           <div class="card h-100 shadow card-hover">
-            <img
-              src="https://via.placeholder.com/600x200.png?text=Soaps+%26+Skincare"
-              class="card-img-top"
-              alt="Soaps & Skincare"
-            />
+            <img src="../assets/images/soaps&skincare.jpg" alt="Soaps & Skincare" style="width: 304px; height: 200px; object-fit: cover;">
             <div class="card-body text-center">
               <h5 class="card-title">Soaps & Skincare</h5>
               <a href="#" class="btn btn-success btn-custom">View more</a>
@@ -76,11 +63,7 @@ include '../includes/header.php';
         </div>
         <div class="col-md-3 col-sm-6 mb-4">
           <div class="card h-100 shadow card-hover">
-            <img
-              src="https://via.placeholder.com/600x200.png?text=Pain+Relief+Balms+%26+Creams"
-              class="card-img-top"
-              alt="Pain Relief Balms & Creams"
-            />
+            <img src="../assets/images/balms.jpg" alt="Pain Relief Balms & Creams" style="width: 304px; height: 200px; object-fit: cover;">
             <div class="card-body text-center">
               <h5 class="card-title">Pain Relief Balms & Creams</h5>
               <a href="#" class="btn btn-success btn-custom">View more</a>
@@ -89,11 +72,7 @@ include '../includes/header.php';
         </div>
         <div class="col-md-3 col-sm-6 mb-4">
           <div class="card h-100 shadow card-hover">
-            <img
-              src="https://via.placeholder.com/600x200.png?text=Wellness+Tonics+%26+Syrups"
-              class="card-img-top"
-              alt="Wellness Tonics & Syrups"
-            />
+           <img src="../assets/images/wellness.jpg" alt="Wellness Tonics & Syrups" style="width: 304px; height: 200px; object-fit: cover;">
             <div class="card-body text-center">
               <h5 class="card-title">Wellness Tonics & Syrups</h5>
               <a href="#" class="btn btn-success btn-custom">View more</a>
@@ -102,11 +81,7 @@ include '../includes/header.php';
         </div>
         <div class="col-md-3 col-sm-6 mb-4">
           <div class="card h-100 shadow card-hover">
-            <img
-              src="https://via.placeholder.com/600x200.png?text=Hair+Care"
-              class="card-img-top"
-              alt="Hair Care"
-            />
+           <img src="../assets/images/hair care.jpeg" alt="Hair Care" style="width: 304px; height: 200px; object-fit: cover;">
             <div class="card-body text-center">
               <h5 class="card-title">Hair Care</h5>
               <a href="#" class="btn btn-success btn-custom">View more</a>
@@ -115,11 +90,7 @@ include '../includes/header.php';
         </div>
         <div class="col-md-3 col-sm-6 mb-4">
           <div class="card h-100 shadow card-hover">
-            <img
-              src="https://via.placeholder.com/600x200.png?text=Baby+Care"
-              class="card-img-top"
-              alt="Baby Care"
-            />
+           <img src="../assets/images/baby care.jpeg" alt="Baby Care" style="width: 304px; height: 200px; object-fit: cover;">
             <div class="card-body text-center">
               <h5 class="card-title">Baby Care</h5>
               <a href="#" class="btn btn-success btn-custom">View more</a>
