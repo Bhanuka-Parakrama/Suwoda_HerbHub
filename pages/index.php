@@ -1,7 +1,6 @@
 <?php
 include '../includes/header.php';
 ?>
-sss
 
 <!DOCTYPE html>
 <html lang="en">
@@ -136,3 +135,7 @@ sss
     ></script>
   </body>
 </html>
+
+<?php
+include '../includes/footer.php'; 
+?>
