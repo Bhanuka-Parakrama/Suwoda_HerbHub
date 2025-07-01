@@ -9,17 +9,7 @@
     <link rel="stylesheet" href="../assets/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <style>
-        nav.navbar * { font-size: 0.9rem !important; }
-        nav.navbar .navbar-brand span { font-size: 0.75rem !important; }
-        nav.navbar .bi { font-size: 1rem !important; }
-        .dropdown-menu .dropdown-item { font-size: 0.9rem !important; }
-        #google_translate_element { padding: 4px 10px; }
-        /* Increase font size for main nav tabs (before search bar) */
-        .navbar-nav.me-auto > .nav-item > .nav-link,
-        .navbar-nav.me-auto > .nav-item > .nav-link.dropdown-toggle {
-            font-size: 1.15rem !important;
-            font-weight: 500;
-        }
+ 
     </style>
 </head>
 <body>
@@ -50,7 +40,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#blog">Blog</a>
+                    <a class="nav-link text-white" href="../pages/blogs.php">Blog</a> <!-- Link to Blog -->
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="#dictionary">Herbal Dictionary</a>
