@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Segoe UI", Arial, sans-serif;
-  background-color: #f8f9fa;
+  background: linear-gradient(135deg, #f4fff4 0%, #e6ffe6 100%);
 }
 .navbar {
   background: linear-gradient(135deg, #198754 60%, #157347 100%);
