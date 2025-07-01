@@ -25,7 +25,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto gap-2">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#home">Home</a>
+                    <a class="nav-link active" href="../pages/index.php">Home</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" href="#" id="productsDropdown" role="button" data-bs-toggle="dropdown">

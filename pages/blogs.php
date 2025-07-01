@@ -1,7 +1,3 @@
-<?php
-include '../includes/header.php';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +12,11 @@ include '../includes/header.php';
   />
   <link rel="stylesheet" href="../assets/styles.css" />
 </head>
+
+<?php
+include '../includes/header.php';
+?>
+
 <body>
   <div class="container mt-5">
     <h2 class="text-center mb-5 section-title">Our Latest Blog Posts</h2>
@@ -30,7 +31,6 @@ include '../includes/header.php';
           <div class="card-body">
             <h5 class="card-title">Benefits of Herbal Teas</h5>
             <p class="card-text">Learn how herbal teas can improve your health and wellbeing. Discover the top herbal teas and how they can help with digestion, sleep, and immunity.</p>
-            <a href="#" class="btn btn-success btn-custom">Read More</a>
           </div>
         </div>
       </div>
@@ -46,7 +46,6 @@ include '../includes/header.php';
           <div class="card-body">
             <h5 class="card-title">Natural Skincare Tips</h5>
             <p class="card-text">Explore natural methods for glowing and healthy skin using Ayurvedic ingredients. Say goodbye to harsh chemicals and try natural face packs, oils, and scrubs.</p>
-            <a href="#" class="btn btn-success btn-custom">Read More</a>
           </div>
         </div>
       </div>
@@ -62,7 +61,6 @@ include '../includes/header.php';
           <div class="card-body">
             <h5 class="card-title">Why Ayurvedic Medicine Matters</h5>
             <p class="card-text">Understand the importance of traditional healing methods. Learn how Ayurveda offers long-term relief without side effects and promotes a balanced lifestyle.</p>
-            <a href="#" class="btn btn-success btn-custom">Read More</a>
           </div>
         </div>
       </div>
