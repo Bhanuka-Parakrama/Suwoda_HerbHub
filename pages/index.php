@@ -79,7 +79,7 @@ include '../includes/header.php';
         </div>
         <div class="col-md-3 col-sm-6 mb-4">
           <div class="card h-100 shadow card-hover">
-           <img src="../assets/images/hair care.jpeg" alt="Hair Care" style="width: 304px; height: 200px; object-fit: cover;">
+           <img src="../assets/images/hair care.jpg" alt="Hair Care" style="width: 304px; height: 200px; object-fit: cover;">
             <div class="card-body text-center">
               <h5 class="card-title">Hair Care</h5>
               <a href="#" class="btn btn-success btn-custom">View more</a>
