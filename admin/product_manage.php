@@ -6,12 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-     <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="stylesheet" href="../assets/styles.css">
 </head>
 <body>
     <div class="container">
         <div class="form-section">
+            <a href="dashbord.php" class="btn btn-success mb-3">
+                <i class="bi bi-arrow-left-circle me-1"></i> Back to Dashboard
+         </a>
             <h2 class="mb-4 text-success"><i class="bi bi-box-seam me-2"></i>Product Management</h2>
+
             <form id="productForm">
                 <input type="hidden" id="editIndex">
                 <div class="mb-3">

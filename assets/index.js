@@ -99,3 +99,139 @@
         });
 
         renderTable();
+
+
+
+        // blog.js
+
+const blogForm = document.getElementById("blogForm");
+const blogTableBody = document.getElementById("blogTableBody");
+const blogTitleInput = document.getElementById("blogTitle");
+const blogImageInput = document.getElementById("blogImage");
+const blogContentInput = document.getElementById("blogContent");
+const saveBtn = document.getElementById("saveBtn");
+const cancelEditBtn = document.getElementById("cancelEditBtn");
+const editIndexInput = document.getElementById("editIndex");
+
+let blogs = [];
+let nextBlogId = 1;
+
+function escapeHtml(text) {
+  if (!text) return "";
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+// Render all blogs in the table
+function renderBlogs() {
+  blogTableBody.innerHTML = "";
+
+  blogs.forEach((blog, index) => {
+    const tr = document.createElement("tr");
+
+    // Use blog.imageName for image display (just filename, no preview)
+    const imageName = blog.imageName || "-";
+
+    // Show truncated content (max 60 chars)
+    const shortContent =
+      blog.content.length > 60
+        ? blog.content.substring(0, 60) + "..."
+        : blog.content;
+
+    tr.innerHTML = `
+      <td>${blog.id}</td>
+      <td>${escapeHtml(blog.title)}</td>
+      <td>${escapeHtml(imageName)}</td>
+      <td>${escapeHtml(shortContent)}</td>
+      <td>
+        <button class="btn btn-sm btn-danger delete-btn" data-index="${index}" title="Delete Blog">
+          <i class="bi bi-trash"></i>
+        </button>
+      </td>
+    `;
+
+    blogTableBody.appendChild(tr);
+  });
+
+  // Add delete button event listeners
+  document.querySelectorAll(".delete-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const index = btn.getAttribute("data-index");
+      deleteBlog(index);
+    });
+  });
+}
+
+// Add new blog
+function addBlog(blog) {
+  blogs.push(blog);
+  nextBlogId++;
+  renderBlogs();
+  resetForm();
+}
+
+// Delete blog by index
+function deleteBlog(index) {
+  if (confirm("Are you sure you want to delete this blog?")) {
+    blogs.splice(index, 1);
+    renderBlogs();
+  }
+}
+
+// Reset form inputs and UI state
+function resetForm() {
+  blogForm.reset();
+  editIndexInput.value = "";
+  saveBtn.textContent = "Save Blog";
+  cancelEditBtn.classList.add("d-none");
+}
+
+// Form submit handler
+blogForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const title = blogTitleInput.value.trim();
+  const content = blogContentInput.value.trim();
+
+  if (!title || !content) {
+    alert("Please enter both title and content.");
+    return;
+  }
+
+  let imageName = "-";
+  if (blogImageInput.files.length > 0) {
+    imageName = blogImageInput.files[0].name;
+  }
+
+  // Check if we are editing an existing blog
+  const editIndex = editIndexInput.value;
+  if (editIndex) {
+    // Update existing blog
+    blogs[editIndex].title = title;
+    blogs[editIndex].content = content;
+    blogs[editIndex].imageName = imageName;
+  } else {
+    // Add new blog
+    addBlog({
+      id: nextBlogId,
+      title,
+      content,
+      imageName,
+    });
+  }
+
+  renderBlogs();
+  resetForm();
+});
+
+// Cancel edit button handler
+cancelEditBtn.addEventListener("click", () => {
+  resetForm();
+});
+
+// Initially render empty
+renderBlogs();
