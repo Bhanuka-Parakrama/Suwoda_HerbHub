@@ -13,15 +13,17 @@
         <div class="form-section">
             <a href="dashbord.php" class="btn btn-success mb-3">
                 <i class="bi bi-arrow-left-circle me-1"></i> Back to Dashboard
-         </a>
+            </a>
             <h2 class="mb-4 text-success"><i class="bi bi-box-seam me-2"></i>Product Management</h2>
 
             <form id="productForm">
                 <input type="hidden" id="editIndex">
+
                 <div class="mb-3">
                     <label for="productName" class="form-label">Product Name</label>
                     <input type="text" class="form-control" id="productName" placeholder="Enter product name" required>
                 </div>
+
                 <div class="mb-3">
                     <label for="productCategory" class="form-label">Category</label>
                     <select class="form-select" id="productCategory" required>
@@ -32,22 +34,32 @@
                         <option>Capsules</option>
                     </select>
                 </div>
+
                 <div class="mb-3">
                     <label for="productPrice" class="form-label">Price (LKR)</label>
                     <input type="number" class="form-control" id="productPrice" min="0" step="0.01" placeholder="Enter price" required>
                 </div>
+
+                <div class="mb-3">
+                    <label for="productQuantity" class="form-label">Quantity</label>
+                    <input type="number" class="form-control" id="productQuantity" min="0" step="1" placeholder="Enter quantity" required>
+                </div>
+
                 <div class="mb-3">
                     <label for="productImage" class="form-label">Product Image</label>
                     <input class="form-control" type="file" id="productImage" accept="image/*">
                 </div>
+
                 <div class="mb-3">
                     <label for="productDescription" class="form-label">Description</label>
                     <textarea class="form-control" id="productDescription" rows="3" placeholder="Enter product description"></textarea>
                 </div>
+
                 <button type="submit" class="btn btn-success w-100" id="saveBtn">Save Product</button>
                 <button type="button" class="btn btn-secondary w-100 mt-2 d-none" id="cancelEditBtn">Cancel Edit</button>
             </form>
         </div>
+
         <div class="table-section">
             <h4 class="mb-3">Product List</h4>
             <div class="table-responsive">
@@ -58,6 +70,7 @@
                             <th>Name</th>
                             <th>Category</th>
                             <th>Price (LKR)</th>
+                            <th>Quantity</th>
                             <th>Image</th>
                             <th>Description</th>
                             <th style="width:120px;">Actions</th>

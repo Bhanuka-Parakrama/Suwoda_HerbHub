@@ -2,59 +2,53 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>User Login</title>
-    <!-- Bootstrap CSS CDN -->
+    <title>Login - Suwoda HerbHub</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
       rel="stylesheet"
+      crossorigin="anonymous"
     />
     <style>
-      body,
-      html {
+      html, body {
         height: 100%;
         margin: 0;
         padding: 0;
-      }
-      .bg-blur {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmLtWOaar455-oA5XhrDGcN9WblIaTcF-DGw&s")
-          no-repeat center center/cover;
-        filter: blur(8px);
-        z-index: 0;
       }
       .center-container {
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        position: relative;
-        z-index: 1;
       }
       .card {
-        background: rgba(255, 255, 255, 0.95);
+        border: 2px solid #198754;
         border-radius: 12px;
+        padding: 18px 24px;
+        background: #fff;
         box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
+        max-width: 350px;
+        width: 100%;
       }
     </style>
   </head>
+
+<?php
+include '../includes/header.php';
+?>
+
   <body>
-    <div class="bg-blur"></div>
     <div class="center-container">
-      <div class="col-md-4">
-        <div class="card shadow">
-          <div class="card-body">
-            <h3 class="card-title text-center mb-4">User Login</h3>
-            <form>
+      <div class="card shadow">
+        <div class="card-body">
+          <h3 class="card-title text-center mb-4">User Login</h3>
+            <form autocomplete="off">
               <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
                 <input
                   type="email"
                   class="form-control"
                   id="email"
+                  name="email"
                   placeholder="Enter email"
                   required
                 />
@@ -65,17 +59,27 @@
                   type="password"
                   class="form-control"
                   id="password"
+                  name="password"
                   placeholder="Password"
                   required
                 />
               </div>
               <button type="submit" class="btn btn-success w-100">Login</button>
             </form>
+            <div class="text-center mt-3">
+              <p class="mb-0">Don't have an account? <a href="registration_form.php" class="text-decoration-none">Register here</a></p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- Bootstrap JS (optional, for interactivity) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
+
+<?php
+include '../includes/footer.php';
+?>

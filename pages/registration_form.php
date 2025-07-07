@@ -2,11 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>User Registration Form</title>
-    <!-- Bootstrap CSS CDN -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    <title>Register - Suwoda Herbhub</title>
+   
+     <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
       rel="stylesheet"
+      crossorigin="anonymous"
     />
     <style>
       body,
@@ -15,30 +16,13 @@
         margin: 0;
         padding: 0;
       }
-      .bg-blur {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100vw;
-        height: 100vh;
-        background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWudphNfEOYw9uSHVKF7rDy8KFVrkkfak3KA&s")
-          no-repeat center center/cover;
-        filter: blur(8px);
-        opacity: 0.8;
-        z-index: 0;
-      }
       .center-container {
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        position: relative;
-        z-index: 1;
       }
       .form-border {
-        border: 2px solid #198754;
         border-radius: 12px;
         padding: 18px 24px;
         background: #fff;
@@ -59,8 +43,12 @@
       }
     </style>
   </head>
+
+<?php
+include '../includes/header.php';
+?>
+
   <body>
-    <div class="bg-blur"></div>
     <div class="center-container">
       <div class="form-border">
         <h2 class="mb-3 text-center">User Registration</h2>
@@ -119,7 +107,14 @@
         </form>
       </div>
     </div>
-    <!-- Bootstrap JS (optional, for interactivity) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+   </body>
 </html>
+
+<?php
+include '../includes/footer.php';
+?>

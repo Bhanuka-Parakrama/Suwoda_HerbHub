@@ -1,108 +1,118 @@
- // File: admin/product_manage.html
- 
- let products = [];
-        let editIndex = null;
-        let nextProductId = 1; // Auto-increment Product ID
+// File: pages/Product.html
+let products = [];
+let editIndex = null;
+let nextProductId = 1; // Auto-increment Product ID
 
-        function renderTable() {
-            const tbody = document.getElementById('productTableBody');
-            tbody.innerHTML = '';
-            products.forEach((product, idx) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${product.product_id}</td>
-                    <td>${product.name}</td>
-                    <td>${product.category}</td>
-                    <td>${product.price}</td>
-                    <td>${product.image ? `<img src="${product.image}" class="img-thumb" alt="Image">` : ''}</td>
-                    <td>${product.description}</td>
-                    <td>
-                        <button class="btn btn-sm btn-warning me-1" onclick="editProduct(${idx})"><i class="bi bi-pencil"></i></button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteProduct(${idx})"><i class="bi bi-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+function renderTable() {
+    const tbody = document.getElementById('productTableBody');
+    tbody.innerHTML = '';
+    products.forEach((product, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${product.product_id}</td>
+            <td>${product.name}</td>
+            <td>${product.category}</td>
+            <td>${product.price}</td>
+            <td>${product.quantity}</td>
+            <td>${product.image ? `<img src="${product.image}" class="img-thumb" alt="Image" style="width: 50px; height: auto;">` : ''}</td>
+            <td>${product.description}</td>
+            <td>
+                <button class="btn btn-sm btn-warning me-1" onclick="editProduct(${idx})"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="deleteProduct(${idx})"><i class="bi bi-trash"></i></button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+document.getElementById('productForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('productName').value.trim();
+    const category = document.getElementById('productCategory').value;
+    const price = document.getElementById('productPrice').value;
+    const quantity = document.getElementById('productQuantity').value;
+    const description = document.getElementById('productDescription').value.trim();
+    const imageInput = document.getElementById('productImage');
+    let image = '';
+
+    function saveAndRender(img) {
+        const newProduct = {
+            product_id: editIndex === null ? nextProductId++ : products[editIndex].product_id,
+            name,
+            category,
+            price,
+            quantity,
+            description,
+            image: img
+        };
+
+        if (editIndex === null) {
+            products.push(newProduct);
+        } else {
+            products[editIndex] = newProduct;
+            editIndex = null;
+            document.getElementById('saveBtn').textContent = 'Save Product';
+            document.getElementById('cancelEditBtn').classList.add('d-none');
         }
 
-        document.getElementById('productForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('productName').value.trim();
-            const category = document.getElementById('productCategory').value;
-            const price = document.getElementById('productPrice').value;
-            const description = document.getElementById('productDescription').value.trim();
-            const imageInput = document.getElementById('productImage');
-            let image = '';
+        document.getElementById('productForm').reset();
+        renderTable();
+    }
 
-            function saveAndRender(img) {
-                if (editIndex === null) {
-                    products.push({ 
-                        product_id: nextProductId++, // Use product_id instead of id
-                        name, category, price, description, image: img 
-                    });
-                } else {
-                    products[editIndex] = { 
-                        ...products[editIndex], // Keep the same product_id
-                        name, category, price, description, image: img 
-                    };
-                    editIndex = null;
-                    document.getElementById('saveBtn').textContent = 'Save Product';
-                    document.getElementById('cancelEditBtn').classList.add('d-none');
-                }
-                document.getElementById('productForm').reset();
-                renderTable();
-            }
+    if (imageInput.files && imageInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            image = e.target.result;
+            saveAndRender(image);
+        };
+        reader.readAsDataURL(imageInput.files[0]);
+    } else {
+        image = editIndex !== null ? products[editIndex].image : '';
+        saveAndRender(image);
+    }
+});
 
-            if (imageInput.files && imageInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    image = e.target.result;
-                    saveAndRender(image);
-                };
-                reader.readAsDataURL(imageInput.files[0]);
-            } else {
-                image = editIndex !== null ? products[editIndex].image : '';
-                saveAndRender(image);
-            }
-        });
+function editProduct(idx) {
+    const product = products[idx];
+    document.getElementById('productName').value = product.name;
+    document.getElementById('productCategory').value = product.category;
+    document.getElementById('productPrice').value = product.price;
+    document.getElementById('productQuantity').value = product.quantity;
+    document.getElementById('productDescription').value = product.description;
+    // Note: You cannot pre-fill file inputs for security reasons
 
-        function editProduct(idx) {
-            const product = products[idx];
-            document.getElementById('productName').value = product.name;
-            document.getElementById('productCategory').value = product.category;
-            document.getElementById('productPrice').value = product.price;
-            document.getElementById('productDescription').value = product.description;
-            // Can't set file input value for image
-            editIndex = idx;
-            document.getElementById('saveBtn').textContent = 'Update Product';
-            document.getElementById('cancelEditBtn').classList.remove('d-none');
-        }
+    editIndex = idx;
+    document.getElementById('saveBtn').textContent = 'Update Product';
+    document.getElementById('cancelEditBtn').classList.remove('d-none');
+}
 
-        function deleteProduct(idx) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                products.splice(idx, 1);
-                renderTable();
-                if (editIndex === idx) {
-                    document.getElementById('productForm').reset();
-                    editIndex = null;
-                    document.getElementById('saveBtn').textContent = 'Save Product';
-                    document.getElementById('cancelEditBtn').classList.add('d-none');
-                }
-            }
-        }
+function deleteProduct(idx) {
+    if (confirm('Are you sure you want to delete this product?')) {
+        products.splice(idx, 1);
+        renderTable();
 
-        document.getElementById('cancelEditBtn').addEventListener('click', function() {
+        if (editIndex === idx) {
             document.getElementById('productForm').reset();
             editIndex = null;
             document.getElementById('saveBtn').textContent = 'Save Product';
-            this.classList.add('d-none');
-        });
+            document.getElementById('cancelEditBtn').classList.add('d-none');
+        }
+    }
+}
 
-        renderTable();
+document.getElementById('cancelEditBtn').addEventListener('click', function() {
+    document.getElementById('productForm').reset();
+    editIndex = null;
+    document.getElementById('saveBtn').textContent = 'Save Product';
+    this.classList.add('d-none');
+});
+
+renderTable();
 
 
 
-        // blog.js
+  //file: pages/Blog.php
 
 const blogForm = document.getElementById("blogForm");
 const blogTableBody = document.getElementById("blogTableBody");
@@ -235,3 +245,141 @@ cancelEditBtn.addEventListener("click", () => {
 
 // Initially render empty
 renderBlogs();
+
+
+
+// File: pages/Cart.php
+    let price = 24.99;
+    let qty = 2;
+    let discount = 0.0;
+
+    function updateCart() {
+      qty = Math.max(1, parseInt(document.getElementById("qty").value) || 1);
+      document.getElementById("qty").value = qty;
+      let subtotal = price * qty;
+      document.getElementById("item-subtotal").textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById("summary-subtotal").textContent = `$${subtotal.toFixed(2)}`;
+      let shipping = subtotal > 50 ? 0 : 5.99;
+      document.getElementById("shipping").textContent = shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`;
+      document.getElementById("discount").textContent = `-$${discount.toFixed(2)}`;
+      let total = subtotal + shipping - discount;
+      document.getElementById("total").textContent = `$${total.toFixed(2)}`;
+    }
+
+    function changeQty(delta) {
+      let input = document.getElementById("qty");
+      let newQty = Math.max(1, parseInt(input.value) + delta);
+      input.value = newQty;
+      updateCart();
+    }
+
+    function removeItem() {
+      document.getElementById("cart-container").classList.add("d-none");
+      document.getElementById("empty-cart").classList.remove("d-none");
+    }
+
+    function continueShopping() {
+      window.location.href = "#";
+    }
+
+    function checkout() {
+      if (parseInt(document.getElementById("qty").value) < 1) {
+        alert("Your cart is empty!");
+        return;
+      }
+      alert("Proceeding to checkout...");
+    }
+
+    updateCart();
+
+
+
+// File: pages/dictionary.php
+  const dictionary = {
+    A: [
+      {
+        word: "Ashwagandha",
+        meaning: "An adaptogenic herb used to reduce stress.",
+        image: "https://via.placeholder.com/300x180?text=Ashwagandha"
+      },
+      {
+        word: "Aloe Vera",
+        meaning: "Succulent plant used for skin healing.",
+        image: "https://via.placeholder.com/300x180?text=Aloe+Vera"
+      },
+    ],
+    B: [
+      {
+        word: "Brahmi",
+        meaning: "Herb known to enhance memory and concentration.",
+        image: "https://via.placeholder.com/300x180?text=Brahmi"
+      },
+      {
+        word: "Basil",
+        meaning: "Aromatic herb used in cooking and medicine.",
+        image: "https://via.placeholder.com/300x180?text=Basil"
+      },
+    ],
+    C: [
+      {
+        word: "Chyawanprash",
+        meaning: "Herbal jam used as a health tonic.",
+        image: "https://via.placeholder.com/300x180?text=Chyawanprash"
+      },
+      {
+        word: "Chamomile",
+        meaning: "Flower used to calm nerves and aid sleep.",
+        image: "https://via.placeholder.com/300x180?text=Chamomile"
+      },
+    ],
+    // Add more letters and herbs here...
+  };
+
+  const lettersContainer = document.getElementById("letters-container");
+  const entriesContainer = document.getElementById("entries-container");
+
+
+  for(let i=65; i<=90; i++) {
+    const letter = String.fromCharCode(i);
+    const col = document.createElement("div");
+    col.className = "col-1"; // 12 letters per row approx
+    
+    const btn = document.createElement("button");
+    btn.textContent = letter;
+    btn.className = "btn btn-success letter-btn";
+    btn.addEventListener("click", () => showEntries(letter));
+    
+    col.appendChild(btn);
+    lettersContainer.appendChild(col);
+  }
+
+  function showEntries(letter) {
+    entriesContainer.innerHTML = "";
+
+    if(!dictionary[letter] || dictionary[letter].length === 0) {
+      entriesContainer.innerHTML = `
+        <div class="col-12">
+          <div class="alert alert-warning text-center">
+            No entries found for "<strong>${letter}</strong>".
+          </div>
+        </div>`;
+      return;
+    }
+
+    dictionary[letter].forEach(({word, meaning, image}) => {
+      const col = document.createElement("div");
+      col.className = "col";
+
+      col.innerHTML = `
+        <div class="card h-100 shadow-sm">
+          <img src="${image}" class="card-img-top" alt="${word}" />
+          <div class="card-body">
+            <h5 class="card-title">${word}</h5>
+            <p class="card-text">${meaning}</p>
+          </div>
+        </div>
+      `;
+
+      entriesContainer.appendChild(col);
+    });
+  }

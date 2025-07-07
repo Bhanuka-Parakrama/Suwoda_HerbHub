@@ -27,23 +27,16 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="../pages/index.php">Home</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="productsDropdown" role="button" data-bs-toggle="dropdown">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="../pages/index.php#products">
                         Categories
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#products">All Products</a></li>
-                        <li><a class="dropdown-item" href="#oils">Herbal Oils</a></li>
-                        <li><a class="dropdown-item" href="#teas">Herbal Teas</a></li>
-                        <li><a class="dropdown-item" href="#powders">Herbal Powders</a></li>
-                        <li><a class="dropdown-item" href="#capsules">Capsules</a></li>
-                    </ul>
+                    </a>         
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="../pages/blogs.php">Blog</a> <!-- Link to Blog -->
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#dictionary">Herbal Dictionary</a>
+                    <a class="nav-link text-white" href="../pages/dictionary.php">Herbal Dictionary</a>
                 </li>
                
             </ul>
@@ -54,10 +47,10 @@
                         <i class="bi bi-search me-1"></i> Search
                     </button>
                 </form>
-                <a href="../pages/loging.php" class="nav-link text-white me-3 d-flex align-items-center">
+                <a href="../pages/login_form.php" class="nav-link text-white me-3 d-flex align-items-center">
                     <i class="bi bi-person me-1"></i> Login
                 </a>
-                <a href="#cart" class="nav-link text-white d-flex align-items-center position-relative">
+                <a href="../pages/cart.php" class="nav-link text-white d-flex align-items-center position-relative">
                     <i class="bi bi-cart me-1"></i> Cart
                 </a>
                 <div id="google_translate_element" class="ms-3"></div>

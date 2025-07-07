@@ -333,6 +333,22 @@ body {
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
  
-
+  
+    /*Dictionary Page Styles */
+    .letter-btn {
+      margin-bottom: 10px;
+      width: 100%; /* Make buttons full width in their grid column */
+      font-weight: bold;
+    }
+    .card-img-top {
+      object-fit: cover;
+      height: 180px;
+    }
+    /* Center the main title */
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+  
 
 
