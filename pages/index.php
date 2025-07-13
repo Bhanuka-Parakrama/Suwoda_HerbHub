@@ -122,7 +122,7 @@ include '../includes/header.php';
           <img src="../assets/images/herbal_oils.jpg" alt="Herbal oils" class="card-img-top" style="height: 200px; object-fit: cover;">
           <div class="card-body text-center">
             <h5 class="card-title">Herbal Oils</h5>
-            <a href="product.php" class="btn btn-success mt-3">View more</a>
+            <a href="products.php" class="btn btn-success mt-3">View more</a>
           </div>
         </div>
       </div>
@@ -132,7 +132,7 @@ include '../includes/header.php';
           <img src="../assets/images/ayurvedic tea.jpg" alt="Ayurvedic teas" class="card-img-top" style="height: 200px; object-fit: cover;">
           <div class="card-body text-center">
             <h5 class="card-title">Ayurvedic Teas</h5>
-            <a href="#" class="btn btn-success mt-3">View more</a>
+            <a href="products.php" class="btn btn-success mt-3">View more</a>
           </div>
         </div>
       </div>
@@ -142,7 +142,7 @@ include '../includes/header.php';
           <img src="../assets/images/herbal powders.jpg" alt="Herbal Powders" class="card-img-top" style="height: 200px; object-fit: cover;">
           <div class="card-body text-center">
             <h5 class="card-title">Herbal Powders & Capsules</h5>
-            <a href="" class="btn btn-success mt-3">View more</a>
+            <a href="products.php" class="btn btn-success mt-3">View more</a>
           </div>
         </div>
       </div>
@@ -152,7 +152,7 @@ include '../includes/header.php';
           <img src="../assets/images/soap&skin.jpg" alt="Soaps & Skincare" class="card-img-top" style="height: 200px; object-fit: cover;">
           <div class="card-body text-center">
             <h5 class="card-title">Soaps & Skincare</h5>
-            <a href="#" class="btn btn-success mt-3">View more</a>
+            <a href="products.php" class="btn btn-success mt-3">View more</a>
           </div>
         </div>
       </div>
@@ -162,7 +162,7 @@ include '../includes/header.php';
           <img src="../assets/images/balms.jpg" alt="Pain Relief Balms & Creams" class="card-img-top" style="height: 200px; object-fit: cover;">
           <div class="card-body text-center">
             <h5 class="card-title">Pain Relief Balms & Creams</h5>
-            <a href="#" class="btn btn-success mt-3">View more</a>
+            <a href="products.php" class="btn btn-success mt-3">View more</a>
           </div>
         </div>
       </div>
@@ -172,7 +172,7 @@ include '../includes/header.php';
           <img src="../assets/images/syrup.jpg" alt="Wellness Tonics & Syrups" class="card-img-top" style="height: 200px; object-fit: cover;">
           <div class="card-body text-center">
             <h5 class="card-title">Syrups</h5>
-            <a href="#" class="btn btn-success mt-3">View more</a>
+            <a href="products.php" class="btn btn-success mt-3">View more</a>
           </div>
         </div>
       </div>
@@ -182,7 +182,7 @@ include '../includes/header.php';
           <img src="../assets/images/hair care.jpg" alt="Hair Care" class="card-img-top" style="height: 200px; object-fit: cover;">
           <div class="card-body text-center">
             <h5 class="card-title">Hair Care</h5>
-            <a href="#" class="btn btn-success mt-3">View more</a>
+            <a href="products.php" class="btn btn-success mt-3">View more</a>
           </div>
         </div>
       </div>
@@ -192,7 +192,7 @@ include '../includes/header.php';
           <img src="../assets/images/baby_care.jpg" alt="Baby Care" class="card-img-top" style="height: 200px; object-fit: cover;">
           <div class="card-body text-center">
             <h5 class="card-title">Baby Care</h5>
-            <a href="#" class="btn btn-success mt-3">View more</a>
+            <a href="products.php" class="btn btn-success mt-3">View more</a>
           </div>
         </div>
       </div>
