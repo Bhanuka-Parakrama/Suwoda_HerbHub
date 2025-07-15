@@ -20,7 +20,7 @@
         align-items: center;
         justify-content: center;
       }
-      .card {
+      .form-border {
         border: 2px solid #198754;
         border-radius: 12px;
         padding: 18px 24px;
@@ -29,47 +29,95 @@
         max-width: 350px;
         width: 100%;
       }
+      .form-label {
+        font-size: 0.95rem;
+      }
+      .form-control {
+        font-size: 0.95rem;
+        padding: 6px 10px;
+      }
+      h3 {
+        font-size: 1.4rem;
+      }
     </style>
   </head>
 
 <?php
+include '../includes/dbconnect.php';
+include '../classes/RegisterUser.php';
+
+$message = '';
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if ($email && $password) {
+        $result = RegisteredUser::login($conn, $email, $password);
+        
+        if ($result['success']) {
+            $message = $result['message'];
+            // Redirect to home page after successful login
+            header("Location: ../index.php");
+            exit();
+        } else {
+            $error = $result['message'];
+        }
+    } else {
+        $error = "Email and password are required.";
+    }
+}
+
 include '../includes/header.php';
 ?>
 
   <body>
     <div class="center-container">
-      <div class="card shadow">
-        <div class="card-body">
-          <h3 class="card-title text-center mb-4">User Login</h3>
-            <form autocomplete="off">
-              <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="email"
-                  name="email"
-                  placeholder="Enter email"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  name="password"
-                  placeholder="Password"
-                  required
-                />
-              </div>
-              <button type="submit" class="btn btn-success w-100">Login</button>
-            </form>
-            <div class="text-center mt-3">
-              <p class="mb-0">Don't have an account? <a href="registration_form.php" class="text-decoration-none">Register here</a></p>
-            </div>
+      <div class="form-border">
+        <h3 class="text-center mb-4">User Login</h3>
+        
+        <?php if (!empty($message)): ?>
+          <div class="alert alert-success"><?php echo htmlspecialchars($message); ?></div>
+        <?php endif; ?>
+        
+        <?php if (!empty($error)): ?>
+          <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+        <?php endif; ?>
+        
+        <form method="POST" action="">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              placeholder="Enter email"
+              value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>"
+              required
+            />
           </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-success w-100">Login</button>
+        </form>
+        
+        <div class="text-center mt-3">
+          <p class="mb-0">Don't have an account? <a href="registration_form.php" class="text-decoration-none">Register here</a></p>
+        </div>
+        
+        <div class="text-center mt-2">
+          <p class="mb-0"><a href="forgot_password.php" class="text-decoration-none">Forgot Password?</a></p>
         </div>
       </div>
     </div>

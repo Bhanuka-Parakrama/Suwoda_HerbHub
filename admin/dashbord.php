@@ -1,4 +1,5 @@
-
+<?php
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,41 +31,47 @@
         </div>
         <div class="row g-4 mb-3">
             <div class="col-md-6 col-sm-12 d-flex justify-content-center">
+                <button type="button" onclick="location.href='category_manage.php'" class="btn btn-primary btn-lg" style="width:400px; height:70px;">
+                    <i class="bi bi-tags me-2"></i>Manage Categories
+                </button>
+            </div>
+            <div class="col-md-6 col-sm-12 d-flex justify-content-center">
                 <button type="button" onclick="location.href='product_manage.php'" class="btn btn-primary btn-lg" style="width:400px; height:70px;">
                     <i class="bi bi-box-seam me-2"></i>Manage Products
                 </button>
             </div>
+            
+        </div>
+        <div class="row g-4 mb-3">
             <div class="col-md-6 col-sm-12 d-flex justify-content-center">
                 <button type="button" onclick="location.href='manage_users.php'" class="btn btn-primary btn-lg" style="width:400px; height:70px;">
                     <i class="bi bi-people me-2"></i>Manage Users
                 </button>
             </div>
-        </div>
-        <div class="row g-4 mb-3">
             <div class="col-md-6 col-sm-12 d-flex justify-content-center">
                 <button type="button" onclick="location.href='manage_orders.php'" class="btn btn-primary btn-lg" style="width:400px; height:70px;">
                     <i class="bi bi-bag-check me-2"></i>Manage Orders
                 </button>
             </div>
+        </div>
+        <div class="row g-4 mb-3">
             <div class="col-md-6 col-sm-12 d-flex justify-content-center">
                 <button type="button" onclick="location.href='dictionary.php'" class="btn btn-primary btn-lg" style="width:400px; height:70px;">
                     <i class="bi bi-book me-2"></i>Manage Dictionary
                 </button>
             </div>
-           
-        </div>
-        <div class="row g-4 mb-3">
             <div class="col-md-6 col-sm-12 d-flex justify-content-center">
                 <button type="button" onclick="location.href='blog_manage.php'" class="btn btn-primary btn-lg" style="width:400px; height:70px;">
                     <i class="bi bi-journal-plus me-2"></i>Manage Blogs
                 </button>
             </div>
-             <div class="col-md-6 col-sm-12 d-flex justify-content-center">
+        </div>
+        <div class="row g-4 mb-3">
+            <div class="col-12 d-flex justify-content-center">
                 <button type="button" onclick="location.href='reports.php'" class="btn btn-primary btn-lg" style="width:400px; height:70px;">
                     <i class="bi bi-bar-chart-line me-2"></i>Reports
                 </button>
             </div>
-            
         </div>
         <div class="row mt-5">
             <div class="col-12 d-flex justify-content-center">
