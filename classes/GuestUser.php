@@ -62,29 +62,5 @@ class GuestUser {
         }
     }
 
-    public function loginUser($conn, $email, $password) {
-        $stmt = $conn->prepare("SELECT user_id, name, email, password FROM user WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        if ($result->num_rows === 1) {
-            $user = $result->fetch_assoc();
-            
-            // Verify the password against the hash
-            if (password_verify($password, $user['password'])) {
-                // Password is correct
-                return [
-                    'success' => true,
-                    'user_id' => $user['user_id'],
-                    'name' => $user['name'],
-                    'email' => $user['email']
-                ];
-            }
-        }
-        
-        return ['success' => false, 'message' => 'Invalid email or password'];
-    }
-
 }
 ?>

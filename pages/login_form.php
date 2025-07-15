@@ -44,7 +44,7 @@
 
 <?php
 include '../includes/dbconnect.php';
-include '../classes/RegisterUser.php';
+include '../classes/adminClass.php';
 
 $message = '';
 $error = '';
@@ -54,12 +54,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
 
     if ($email && $password) {
-        $result = RegisteredUser::login($conn, $email, $password);
+        $result = Admin::login($conn, $email, $password);
         
         if ($result['success']) {
-            $message = $result['message'];
-            // Redirect to home page after successful login
-            header("Location: ../index.php");
+            // Start session and store admin data
+            session_start();
+            $_SESSION['admin_id'] = $result['admin_id'];
+            $_SESSION['admin_email'] = $email;
+            $_SESSION['admin_logged_in'] = true;
+            
+            // Redirect to admin dashboard
+            header("Location: ../admin/dashboard.php");
             exit();
         } else {
             $error = $result['message'];

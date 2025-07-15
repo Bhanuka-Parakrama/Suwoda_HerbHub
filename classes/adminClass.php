@@ -1,4 +1,5 @@
 <?php
+
 class Admin {
     private $admin_id;
     private $name;
@@ -11,27 +12,29 @@ class Admin {
         $this->password = $password;
     }
 
-    // Admin Login
     public static function login($conn, $email, $password) {
-        $query = "SELECT * FROM user WHERE email = ? AND user_type = 'admin'";
+        $query = "SELECT * FROM admin WHERE email = ? AND password = ?";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $email);
+
+        if (!$stmt) {
+            die("Prepare failed: " . $conn->error); // ✅ helpful debug
+        }
+
+        $stmt->bind_param("ss", $email, $password);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if ($result->num_rows === 1) {
+        if ($result && $result->num_rows === 1) {
             $admin = $result->fetch_assoc();
-            if (password_verify($password, $admin['password'])) {
-                session_start();
-                $_SESSION['admin_id'] = $admin['user_id'];
-                $_SESSION['admin_name'] = $admin['name'];
-                $_SESSION['admin_email'] = $admin['email'];
-                return $admin;
-            }
+            $_SESSION['admin_id'] = $admin['admin_id'];
+            $_SESSION['admin_email'] = $admin['email'];
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
+    
     // Logout
     public static function logout() {
         session_start();
