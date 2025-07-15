@@ -199,7 +199,6 @@ include '../includes/header.php';
     </div>
   </div>
 
-
   <!-- Blog and Dictionary Section -->
   <div class="container my-5" id="blog-dictionary">
     <div class="row">

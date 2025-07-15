@@ -6,7 +6,8 @@
     <title>Footer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- Fixed Bootstrap Icons link -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../assets/styles.css">
 </head> 
 <body>
@@ -35,6 +36,8 @@
                     <li><a href="../pages/index.php#about"><i class="bi bi-info-circle me-1"></i> About Us</a></li>
                     <li><a href="../pages/index.php#products"><i class="bi bi-grid-3x3-gap me-1"></i> Categories</a></li>
                     <li><a href="../pages/products.php"><i class="bi bi-bag me-1"></i> Products</a></li>
+                    <!-- Enhanced Admin Login with better icon -->
+                    <li><a href="../admin/admin_login.php" class="text-success fw-bold"><i class="bi bi-shield-lock me-1"></i> Admin Login</a></li>
                 </ul>
             </div>
            
@@ -48,8 +51,18 @@
             </div>
         </div>
         <hr>
-        <div class="text-center small mt-3">
-            &copy; <?php echo date('Y'); ?> Suwoda HerbHub. All rights reserved.
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center">
+                    <p class="mb-3">
+                        <i class="bi bi-c-circle me-1"></i>Suwoda HerbHub. All rights reserved.
+                    </p>
+                        <a href="../admin/admin_login.php" class="btn btn-success">
+                            <i class="bi bi-shield-lock-fill me-1"></i>Secure Login
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </footer>
