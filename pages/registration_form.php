@@ -62,6 +62,18 @@ include '../includes/header.php';
   }
   h2 {
     font-size: 1.4rem;
+    color: #0d6efd;
+  }
+  .btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    transition: all 0.3s ease;
+  }
+  .btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
   }
 </style>
 
@@ -146,7 +158,7 @@ include '../includes/header.php';
     </form>
 
     <div class="text-center mt-3">
-      <p class="mb-0">Already have an account? <a href="login_form.php" class="text-decoration-none">Login here</a></p>
+      <p class="mb-0">Already have an account? <a href="login_form.php" class="text-decoration-none text-primary">Login here</a></p>
     </div>
   </div>
 </div>

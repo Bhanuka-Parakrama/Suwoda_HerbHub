@@ -7,15 +7,26 @@
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" 
     integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../assets/styles.css">
+    
+    <style>
+        .form-section {
+            border: 2px solid #0d6efd;
+            border-radius: 15px;
+            padding: 30px;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(13, 110, 253, 0.1);
+            margin-bottom: 30px;
+        }
+    </style>
+   
 </head>
 <body>
     <div class="container">
         <div class="form-section">
-            <a href="dashbord.php" class="btn btn-success mb-3">
+            <a href="dashbord.php" class="btn btn-primary mb-3">
                 <i class="bi bi-arrow-left-circle me-1"></i> Back to Dashboard
             </a>
-            <h2 class="mb-4 text-success"><i class="bi bi-tags me-2"></i>Category Management</h2>
+            <h2 class="mb-4 text-primary"><i class="bi bi-tags me-2"></i>Category Management</h2>
 
             <form id="categoryForm">
                 <input type="hidden" id="editIndex">
@@ -25,8 +36,12 @@
                     <input type="text" class="form-control" id="categoryName" placeholder="Enter category name" required>
                 </div>
 
-                <button type="submit" class="btn btn-success w-100" id="saveBtn">Save Category</button>
-                <button type="button" class="btn btn-secondary w-100 mt-2 d-none" id="cancelEditBtn">Cancel Edit</button>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary" id="saveBtn">Save Category</button>
+                </div>
+                <div class="text-center mt-2">
+                    <button type="button" class="btn btn-secondary w-100 d-none" id="cancelEditBtn">Cancel Edit</button>
+                </div>
             </form>
         </div>
 
@@ -34,7 +49,7 @@
             <h4 class="mb-3">Category List</h4>
             <div class="table-responsive">
                 <table class="table table-bordered align-middle">
-                    <thead class="table-success">
+                    <thead class="table-primary">
                         <tr>
                             <th>Category ID</th>
                             <th>Category Name</th>
