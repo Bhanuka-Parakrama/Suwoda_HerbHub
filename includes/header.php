@@ -35,7 +35,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="../pages/index.php#products">
+                    <a class="nav-link text-white" href="../pages/index.php#categoryDetails">
                         <i class="bi bi-grid-3x3-gap me-1"></i>Categories
                     </a>         
                 </li>

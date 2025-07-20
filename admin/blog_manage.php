@@ -58,6 +58,15 @@
                         placeholder="Enter blog content"
                     ></textarea>
                 </div>
+                <div class="mb-3">
+                    <label for="createdDate" class="form-label">Created Date</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="createdDate"
+                        required
+                    />
+                </div>
                 <div class="text-center">
                 <button type="submit" class="btn btn-primary" id="saveBtn">
                     Save Blog
@@ -79,6 +88,7 @@
                             <th>Title</th>
                             <th>Image</th>
                             <th>Content</th>
+                            <th>Created Date</th>
                             <th style="width:120px;">Actions</th>
                         </tr>
                     </thead>

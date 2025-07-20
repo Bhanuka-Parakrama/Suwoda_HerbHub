@@ -67,6 +67,15 @@ class Admin {
         return $stmt->execute();
     }
 
+    
+    //categories management
+
+    public function getAllCategories($conn) {
+        $query = "SELECT * FROM category ORDER BY category_id DESC";
+        $result = $conn->query($query);
+        return $result;
+    }
+
     public function addCategory($conn, $name) {
         $query = "INSERT INTO category (name) VALUES (?)";
         $stmt = $conn->prepare($query);
@@ -88,11 +97,26 @@ class Admin {
         return $stmt->execute();
     }
 
+
+
+    //user management
+
     public function getAllUsers($conn) {
         $query = "SELECT * FROM user WHERE user_type = 'registered'";
         $result = $conn->query($query);
         return $result;
     }
+
+    // Get all products with category information
+    public function getAllProducts($conn) {
+        $query = "SELECT p.*, c.name as category_name 
+                  FROM product p 
+                  LEFT JOIN category c ON p.category_id = c.category_id 
+                  ORDER BY p.product_id DESC";
+        $result = $conn->query($query);
+        return $result;
+    }
+
 
     public function updateOrderStatus($conn, $order_id, $status) {
         $query = "UPDATE `order` SET status = ? WHERE order_id = ?";
@@ -100,6 +124,9 @@ class Admin {
         $stmt->bind_param("si", $status, $order_id);
         return $stmt->execute();
     }
+
+
+    //blog management
 
     public function addBlog($conn, $title, $content) {
         $query = "INSERT INTO blog (admin_id, title, content, published_date)
@@ -109,6 +136,25 @@ class Admin {
         return $stmt->execute();
     }
 
+    public function getAllBlogs($conn) {
+        $query = "SELECT b.*, a.name as admin_name 
+                  FROM blog b 
+                  LEFT JOIN admin a ON b.admin_id = a.admin_id 
+                  ORDER BY b.blog_id DESC";
+        $result = $conn->query($query);
+        return $result;
+    }
+
+    public function deleteBlog($conn, $blog_id) {
+        $query = "DELETE FROM blog WHERE blog_id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $blog_id);
+        return $stmt->execute();
+    }
+
+
+
+    
     public function addHerb($conn, $name, $sci_name, $uses, $image) {
         $query = "INSERT INTO herb (name, scientific_name, uses, image)
                   VALUES (?, ?, ?, ?)";

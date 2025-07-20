@@ -1,3 +1,26 @@
+<?php
+session_start();
+require_once '../includes/dbconnect.php'; // Make sure this file returns $conn
+require_once '../classes/RegisterUser.php'; // Path to your RegisteredUser.php
+
+$loginError = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    $loginResult = RegisteredUser::login($conn, $email, $password);
+
+    if ($loginResult['success']) {
+        // Redirect to dashboard or homepage after successful login
+        header("Location: user_profile.php"); // Adjust this path
+        exit();
+    } else {
+        $loginError = $loginResult['message'];
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,8 +31,6 @@
       rel="stylesheet"
       crossorigin="anonymous"
     />
-
-
     <style>
       html, body {
         height: 100%;
@@ -21,6 +42,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        padding-top: 80px; /* Header space */
+        padding-bottom: 80px; /* Footer space */
       }
       .form-border {
         border: 2px solid #198754;
@@ -44,54 +67,20 @@
     </style>
   </head>
 
-<?php
-include '../includes/dbconnect.php';
-include '../classes/adminClass.php';
-
-$message = '';
-$error = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-
-    if ($email && $password) {
-        $result = Admin::login($conn, $email, $password);
-        
-        if ($result['success']) {
-            // Start session and store admin data
-            session_start();
-            $_SESSION['admin_id'] = $result['admin_id'];
-            $_SESSION['admin_email'] = $email;
-            $_SESSION['admin_logged_in'] = true;
-            
-            // Redirect to admin dashboard
-            header("Location: ../admin/dashboard.php");
-            exit();
-        } else {
-            $error = $result['message'];
-        }
-    } else {
-        $error = "Email and password are required.";
-    }
-}
-
-include '../includes/header.php';
-?>
+  <?php include '../includes/header.php'; ?>
 
   <body>
     <div class="center-container">
       <div class="form-border">
         <h3 class="text-center mb-4">User Login</h3>
-        
-        <?php if (!empty($message)): ?>
-          <div class="alert alert-success"><?php echo htmlspecialchars($message); ?></div>
+
+        <!-- Show error if login failed -->
+        <?php if (!empty($loginError)): ?>
+          <div class="alert alert-danger text-center">
+            <?= htmlspecialchars($loginError) ?>
+          </div>
         <?php endif; ?>
-        
-        <?php if (!empty($error)): ?>
-          <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
-        <?php endif; ?>
-        
+
         <form method="POST" action="">
           <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
@@ -101,7 +90,6 @@ include '../includes/header.php';
               id="email"
               name="email"
               placeholder="Enter email"
-              value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>"
               required
             />
           </div>
@@ -118,23 +106,28 @@ include '../includes/header.php';
           </div>
           <button type="submit" class="btn btn-success w-100">Login</button>
         </form>
-        
+
         <div class="text-center mt-3">
-          <p class="mb-0">Don't have an account? <a href="registration_form.php" class="text-decoration-none">Register here</a></p>
+          <p class="mb-0">
+            Don't have an account?
+            <a href="registration_form.php" class="text-decoration-none">Register here</a>
+          </p>
         </div>
-        
+
         <div class="text-center mt-2">
-          <p class="mb-0"><a href="forgot_password.php" class="text-decoration-none">Forgot Password?</a></p>
+          <p class="mb-0">
+            <a href="forgot_password.php" class="text-decoration-none">Forgot Password?</a>
+          </p>
         </div>
       </div>
     </div>
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
       crossorigin="anonymous"
     ></script>
   </body>
+
+  <?php include '../includes/footer.php'; ?>
 </html>
 
-<?php
-include '../includes/footer.php';
-?>

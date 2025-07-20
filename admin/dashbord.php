@@ -75,7 +75,7 @@
         </div>
         <div class="row mt-5">
             <div class="col-12 d-flex justify-content-center">
-                <button type="button" onclick="location.href='logout.php'" class="btn btn-danger px-4 py-2 fw-bold" style="width:180px; height:45px;">Log out</button>
+                <button type="button" onclick="location.href='logout.php'" class="btn btn-outline-danger px-4 py-2 fw-bold" style="width:180px; height:45px;">Log out</button>
             </div>
         </div>
     </main>
