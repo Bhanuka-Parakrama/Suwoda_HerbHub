@@ -7,6 +7,15 @@ class GuestUser {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function searchProducts($conn, $keyword) {
+        $search = "%" . $conn->real_escape_string($keyword) . "%";
+        $query = "SELECT * FROM product WHERE (product_name LIKE ? OR description LIKE ?)";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("ss", $search, $search);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function readBlogs($conn) {
         $query = "SELECT * FROM blogs WHERE status = 'published'";
         $result = $conn->query($query);

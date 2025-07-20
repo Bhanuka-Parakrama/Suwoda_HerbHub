@@ -1,5 +1,4 @@
 <?php
-
 class Blog {
     private $blog_id;
     private $title;
@@ -11,8 +10,21 @@ class Blog {
         $this->blog_id = $blog_id;
     }
 
-    
-    // Show blog details using object method
+    // Static method to get all blogs
+    public static function showDetail($conn) {
+        $query = "SELECT * FROM blog ORDER BY published_date DESC";
+        $result = $conn->query($query);
+
+        $blogs = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $blogs[] = $row;
+            }
+        }
+        return $blogs;
+    }
+
+    // Optional: Show one blog detail (by instance)
     public function showDetails($conn) {
         if (!$this->blog_id) {
             return null;
@@ -30,9 +42,9 @@ class Blog {
             $this->published_date = $result['published_date'];
             $this->image = $result['image'];
 
-        return $result;
+            return $result;
+        }
+        return null;
     }
-
-} 
-}   
+}
 ?>

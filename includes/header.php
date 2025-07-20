@@ -54,12 +54,11 @@
             
             <!-- Desktop Search & User Actions -->
             <div class="navbar-nav ms-auto align-items-center d-none d-lg-flex user-actions">
-                <form class="d-flex me-3 search-form" role="search">
-                    <input class="form-control me-2" type="search" placeholder="search your product" aria-label="Search">
-                    <button class="btn btn-warning search-btn d-flex align-items-center fw-bold" type="submit">
-                        <i class="bi bi-search me-1"></i>Search
-                    </button>
-                </form>
+               <form class="d-flex" action="search.php" method="GET">
+                 <input class="form-control me-2" type="search" name="keyword" placeholder="Search products..." required>
+                <button class="btn btn-warning btn-sm" type="submit">Search</button>
+               </form>
+
                 
                 <a href="../pages/login_form.php" class="nav-link text-white me-3 d-flex align-items-center">
                     <i class="bi bi-person me-1"></i>Login

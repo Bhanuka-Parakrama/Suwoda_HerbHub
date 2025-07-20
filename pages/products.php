@@ -1,3 +1,12 @@
+<?php
+// Include necessary files
+require_once '../includes/dbconnect.php';
+require_once '../classes/productClass.php';
+
+// Get all products from database
+$products = Product::getAll($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,94 +21,127 @@
     />
   </head>
 
-  <?php
-  include '../includes/header.php';
-  ?>
+  <?php include '../includes/header.php'; ?>
 
   <body>
-<div class="container mt-5">
-  <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
-    <div class="col">
-      <div class="card h-100">
-        <img
-          src="https://via.placeholder.com/286x180?text=Herbal+Oils"
-          class="card-img-top"
-          alt="Herbal Oils"
-        />
-        <div class="card-body">
-          <h5 class="card-title">Herbal Oils</h5>
-          <p class="card-text">Neem oil, Coconut oil, Sandalwood oil</p>
-          <p class="card-text"><strong>Price: LKR 1200</strong></p>
-          <div class="mb-3">
-            <label for="qty1" class="form-label">Quantity</label>
-            <input type="number" id="qty1" class="form-control" value="1" min="1" style="max-width: 100px" />
+    <div class="container mt-5">
+      <h2 class="mb-4 text-center">Our Products</h2>
+      
+      <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+        <?php while ($product = $products->fetch_assoc()): ?>
+          <div class="col">
+            <div class="card h-100">
+              <?php if ($product['image']): ?>
+                <img
+                  src="<?= str_replace('../uploads/', '../uploads/', $product['image']) ?>"
+                  class="card-img-top"
+                  alt="<?= htmlspecialchars($product['product_name']) ?>"
+                  style="height: 200px; object-fit: cover;"
+                />
+              <?php else: ?>
+                <img
+                  src="https://via.placeholder.com/286x180?text=No+Image"
+                  class="card-img-top"
+                  alt="No Image"
+                  style="height: 200px; object-fit: cover;"
+                />
+              <?php endif; ?>
+              
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title"><?= htmlspecialchars($product['product_name']) ?></h5>
+                <p class="card-text"><?= htmlspecialchars($product['description']) ?></p>
+                <p class="card-text"><small class="text-muted">Category: <?= htmlspecialchars($product['category_name']) ?></small></p>
+                <p class="card-text"><strong>Price: LKR <?= number_format($product['price'], 2) ?></strong></p>
+                
+                <?php if ($product['quantity'] > 0): ?>
+                  <p class="card-text"><small class="text-success">In Stock (<?= $product['quantity'] ?> available)</small></p>
+                  
+                  <div class="mb-3 mt-auto">
+                    <label for="qty<?= $product['product_id'] ?>" class="form-label">Quantity</label>
+                    <input 
+                      type="number" 
+                      id="qty<?= $product['product_id'] ?>" 
+                      class="form-control" 
+                      value="1" 
+                      min="1" 
+                      max="<?= $product['quantity'] ?>"
+                      style="max-width: 100px" 
+                    />
+                  </div>
+                  
+                  <div class="d-flex gap-2">
+                    <button 
+                      class="btn btn-success btn-sm flex-fill"
+                      onclick="addToCart(<?= $product['product_id'] ?>)"
+                    >
+                      Add to Cart
+                    </button>
+                    <button 
+                      class="btn btn-warning btn-sm flex-fill"
+                      onclick="buyNow(<?= $product['product_id'] ?>)"
+                    >
+                      Buy Now
+                    </button>
+                  </div>
+                <?php else: ?>
+                  <p class="card-text"><small class="text-danger">Out of Stock</small></p>
+                  <button class="btn btn-secondary btn-sm flex-fill mt-auto" disabled>
+                    Out of Stock
+                  </button>
+                <?php endif; ?>
+              </div>
+            </div>
           </div>
-          <div class="d-flex gap-2">
-            <button class="btn btn-success btn-sm flex-fill">Add to Cart</button>
-            <button class="btn btn-success btn-sm flex-fill">Buy Now</button>
-          </div>
-        </div>
+        <?php endwhile; ?>
       </div>
+      
+      <?php if ($products->num_rows == 0): ?>
+        <div class="text-center">
+          <h4>No products available at the moment.</h4>
+          <p class="text-muted">Please check back later for new products.</p>
+        </div>
+      <?php endif; ?>
     </div>
 
-    <div class="col">
-      <div class="card h-100">
-        <img
-          src="https://via.placeholder.com/286x180?text=Ayurvedic+Teas"
-          class="card-img-top"
-          alt="Ayurvedic Teas"
-        />
-        <div class="card-body">
-          <h5 class="card-title">Ayurvedic Teas</h5>
-          <p class="card-text">Ginger tea, Detox tea, Coriander tea</p>
-          <p class="card-text"><strong>Price: LKR 800</strong></p>
-          <div class="mb-3">
-            <label for="qty2" class="form-label">Quantity</label>
-            <input type="number" id="qty2" class="form-control" value="1" min="1" style="max-width: 100px" />
-          </div>
-          <div class="d-flex gap-2">
-            <button class="btn btn-success btn-sm flex-fill">Add to Cart</button>
-            <button class="btn btn-success btn-sm flex-fill">Buy Now</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col">
-      <div class="card h-100">
-        <img
-          src="https://via.placeholder.com/286x180?text=Herbal+Powders"
-          class="card-img-top"
-          alt="Herbal Powders & Capsules"
-        />
-        <div class="card-body">
-          <h5 class="card-title">Herbal Powders & Capsules</h5>
-          <p class="card-text">Triphala powder, Ashwagandha capsules</p>
-          <p class="card-text"><strong>Price: LKR 1500</strong></p>
-          <div class="mb-3">
-            <label for="qty3" class="form-label">Quantity</label>
-            <input type="number" id="qty3" class="form-control" value="1" min="1" style="max-width: 100px" />
-          </div>
-          <div class="d-flex gap-2">
-            <button class="btn btn-success btn-sm flex-fill">Add to Cart</button>
-            <button class="btn btn-success btn-sm flex-fill">Buy Now</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Repeat the same structure for other rows/cards as needed, just increment qty id -->
-</div>
+    <script>
+      function addToCart(productId) {
+        const quantity = document.getElementById('qty' + productId).value;
+        
+        // Send AJAX request to add to cart
+        fetch('../includes/add_to_cart.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: 'product_id=' + productId + '&quantity=' + quantity
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Product added to cart successfully!');
+          } else {
+            alert('Error: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred while adding to cart.');
+        });
+      }
+      
+      function buyNow(productId) {
+        const quantity = document.getElementById('qty' + productId).value;
+        // Redirect to checkout page with product details
+        window.location.href = '../pages/checkout.php?product_id=' + productId + '&quantity=' + quantity;
+      }
+    </script>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
-      integrity="sha384-7qAoOXltbVP82dhxHAUje59V5r2YsVfBafyUDxEdApLPmcdhBPg1DKg1ERo0BZlK"
+      integrity="sha384-7qAoOXltbVP82dhxHAUje59V5r2YsVfBafyUDxEdApLPmcdhBPg1ERo0BZlK"
       crossorigin="anonymous"
     ></script>
   </body>
 </html>
 
-<?php
-include '../includes/footer.php';
-?>
+<?php include '../includes/footer.php'; ?>

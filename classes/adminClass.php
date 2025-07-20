@@ -42,30 +42,7 @@ class Admin {
         session_destroy();
     }
 
-    public function addProduct($conn, $name, $category_id, $price, $desc, $image, $stock, $status) {
-        $query = "INSERT INTO product (name, category_id, price, description, image, stock_quantity, status)
-                  VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("sidssis", $name, $category_id, $price, $desc, $image, $stock, $status);
-        return $stmt->execute();
-    }
-
-    public function updateProduct($conn, $product_id, $name, $category_id, $price, $desc, $image, $stock, $status) {
-        $query = "UPDATE product SET name=?, category_id=?, price=?, description=?, image=?, stock_quantity=?, status=?
-                  WHERE product_id=?";
-
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("sidssisi", $name, $category_id, $price, $desc, $image, $stock, $status, $product_id);
-        return $stmt->execute();
-    }
-
-    public function deleteProduct($conn, $product_id) {
-        $query = "DELETE FROM product WHERE product_id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $product_id);
-        return $stmt->execute();
-    }
+  
 
     
     //categories management
@@ -76,12 +53,6 @@ class Admin {
         return $result;
     }
 
-    public function addCategory($conn, $name) {
-        $query = "INSERT INTO category (name) VALUES (?)";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $name);
-        return $stmt->execute();
-    }
 
     public function updateCategory($conn, $category_id, $newName) {
         $query = "UPDATE category SET name = ? WHERE category_id = ?";
@@ -97,7 +68,53 @@ class Admin {
         return $stmt->execute();
     }
 
+ 
+    //product management
+public function addProduct($conn, $product_name, $name, $price, $quantity, $imagePath, $description) {
+        $stmt = $conn->prepare("SELECT category_id FROM category WHERE name = ?");
+        $stmt->bind_param("s", $name);
+        $stmt->execute();
+        $stmt->bind_result($category_id);
+        $stmt->fetch();
+        $stmt->close();
 
+        $query = "INSERT INTO product (product_name, category_id, price, quantity, image, description)
+                  VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("siddss", $product_name, $category_id, $price, $quantity, $imagePath, $description);
+        return $stmt->execute();
+    }
+
+    public static function getProducts($conn) {
+        $query = "SELECT p.*, c.name FROM product p JOIN category c ON p.category_id = c.category_id";
+        return $conn->query($query);
+    }
+
+    public function deleteProduct($conn, $id) {
+        $stmt = $conn->prepare("DELETE FROM product WHERE product_id = ?");
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
+    }
+
+    public function updateProduct($conn, $id, $product_name, $category_name, $price, $quantity, $imagePath, $description) {
+        $stmt = $conn->prepare("SELECT category_id FROM category WHERE name = ?");
+        $stmt->bind_param("s", $category_name); // Fix: change $name to $category_name
+        $stmt->execute();
+        $stmt->bind_result($category_id);
+        $stmt->fetch();
+        $stmt->close();
+
+        $query = "UPDATE product SET product_name=?, category_id=?, price=?, quantity=?, image=?, description=? WHERE product_id=?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("siddssi", $product_name, $category_id, $price, $quantity, $imagePath, $description, $id);
+        return $stmt->execute();
+    }
+
+    public static function getCategories($conn) {
+        return $conn->query("SELECT * FROM category");
+    }
+
+   
 
     //user management
 
@@ -106,17 +123,6 @@ class Admin {
         $result = $conn->query($query);
         return $result;
     }
-
-    // Get all products with category information
-    public function getAllProducts($conn) {
-        $query = "SELECT p.*, c.name as category_name 
-                  FROM product p 
-                  LEFT JOIN category c ON p.category_id = c.category_id 
-                  ORDER BY p.product_id DESC";
-        $result = $conn->query($query);
-        return $result;
-    }
-
 
     public function updateOrderStatus($conn, $order_id, $status) {
         $query = "UPDATE `order` SET status = ? WHERE order_id = ?";
@@ -128,21 +134,24 @@ class Admin {
 
     //blog management
 
-    public function addBlog($conn, $title, $content) {
-        $query = "INSERT INTO blog (admin_id, title, content, published_date)
-                  VALUES (?, ?, ?, NOW())";
+    public function addBlog($conn, $title, $content, $imagePath) {
+        $query = "INSERT INTO blog (title, content, image, published_date) VALUES (?, ?, ?, NOW())";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("iss", $_SESSION['admin_id'], $title, $content);
+        $stmt->bind_param("sss", $title, $content, $imagePath);
         return $stmt->execute();
     }
 
-    public function getAllBlogs($conn) {
-        $query = "SELECT b.*, a.name as admin_name 
-                  FROM blog b 
-                  LEFT JOIN admin a ON b.admin_id = a.admin_id 
-                  ORDER BY b.blog_id DESC";
+    public static function viewBlogs($conn) {
+        $query = "SELECT * FROM blog ORDER BY published_date DESC";
         $result = $conn->query($query);
-        return $result;
+        $blogs = [];
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $blogs[] = $row;
+            }
+        }
+        return $blogs;
     }
 
     public function deleteBlog($conn, $blog_id) {
@@ -154,7 +163,8 @@ class Admin {
 
 
 
-    
+
+    //herb management
     public function addHerb($conn, $name, $sci_name, $uses, $image) {
         $query = "INSERT INTO herb (name, scientific_name, uses, image)
                   VALUES (?, ?, ?, ?)";

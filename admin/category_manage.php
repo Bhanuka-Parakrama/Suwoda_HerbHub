@@ -56,6 +56,17 @@ if (isset($_POST['updateCategory'])) {
     exit();
 }
 
+  $edit = false;
+  $editCategory = null;
+
+        if (isset($_GET['edit'])) {
+            $edit = true;
+            $id = $_GET['edit'];
+            $res = $conn->query("SELECT * FROM category WHERE category_id = $id");
+            $editCategory = $res->fetch_assoc();
+        }
+       
+
 $categories = $admin->getAllCategories($conn);
 ?>
 
@@ -65,24 +76,28 @@ $categories = $admin->getAllCategories($conn);
     <meta charset="UTF-8">
     <title>Category Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+     
+     <style>
+        .form-section {
+            border: 2px solid #0d6efd;
+            border-radius: 15px;
+            padding: 30px;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(13, 110, 253, 0.1);
+            margin-bottom: 30px;
+        }
+     </style>
+
 </head>
 <body>
-<div class="container mt-5">
-    <h2 class="mb-4 text-primary">Category Management</h2>
-
-    <!-- Add or Update Form -->
-    <form method="POST" enctype="multipart/form-data" class="mb-5">
-        <?php
-        $edit = false;
-        $editCategory = null;
-
-        if (isset($_GET['edit'])) {
-            $edit = true;
-            $id = $_GET['edit'];
-            $res = $conn->query("SELECT * FROM category WHERE category_id = $id");
-            $editCategory = $res->fetch_assoc();
-        }
-        ?>
+     <div class="container mt-4">
+        <div class="form-section">
+            <a href="dashbord.php" class="btn btn-primary mb-3">
+                <i class="bi bi-arrow-left-circle me-1"></i> Back to Dashboard
+            </a>
+            <h2 class="mb-4 text-primary"><i class="bi bi-journal-text me-2"></i>Category Management</h2>
+     <form method="POST" enctype="multipart/form-data">
         <input type="hidden" name="categoryId" value="<?= $edit ? $editCategory['category_id'] : '' ?>">
         <input type="hidden" name="existingImage" value="<?= $edit ? $editCategory['image'] : '' ?>">
 
@@ -100,15 +115,18 @@ $categories = $admin->getAllCategories($conn);
             <?php endif; ?>
         </div>
 
-        <button type="submit" name="<?= $edit ? 'updateCategory' : 'addCategory' ?>"
-                class="btn btn-<?= $edit ? 'warning' : 'primary' ?>">
-            <?= $edit ? 'Update Category' : 'Add Category' ?>
-        </button>
+        <div class="text-center">
+            <button type="submit" name="<?= $edit ? 'updateCategory' : 'addCategory' ?>"
+                    class="btn btn-<?= $edit ? 'warning' : 'primary' ?>">
+                <?= $edit ? 'Update Category' : 'Add Category' ?>
+            </button>
 
-        <?php if ($edit): ?>
-            <a href="category_manage.php" class="btn btn-secondary">Cancel</a>
-        <?php endif; ?>
+            <?php if ($edit): ?>
+                <a href="category_manage.php" class="btn btn-secondary ms-2">Cancel</a>
+            <?php endif; ?>
+        </div>
     </form>
+    </div>
 
     <!-- Category Table -->
     <table class="table table-bordered">
