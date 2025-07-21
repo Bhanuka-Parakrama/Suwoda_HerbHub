@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['title'], $_POST['cont
     // Image upload
     $imagePath = null;
     if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
-        $targetDir = "../uploads/";
+        $targetDir = "../assets/images/uploads";
         if (!is_dir($targetDir)) {
             mkdir($targetDir, 0755, true);
         }

@@ -139,7 +139,7 @@ require_once '../classes/CategoryClass.php';
 </div>
 
 <!-- Categories Section -->
-<div class="container mt-5">
+<div id="categoryDetails" class="container mt-5">
   <h2 class="text-center text-success mb-4">🌿 Featured Herbal Categories</h2>
   <div class="row">
     <?php

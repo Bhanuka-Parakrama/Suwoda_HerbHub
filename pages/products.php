@@ -36,7 +36,7 @@ $products = Product::getAll($conn);
                   src="<?= str_replace('../uploads/', '../uploads/', $product['image']) ?>"
                   class="card-img-top"
                   alt="<?= htmlspecialchars($product['product_name']) ?>"
-                  style="height: 200px; object-fit: cover;"
+                  style="height: 400px; object-fit: cover;"
                 />
               <?php else: ?>
                 <img

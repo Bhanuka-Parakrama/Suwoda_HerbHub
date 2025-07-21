@@ -18,8 +18,7 @@ if (isset($_COOKIE['admin_logged_in'])) {
     setcookie('admin_logged_in', '', time() - 3600, '/');
 }
 
-// Redirect to home page after a brief delay
-header("refresh:2;url=../index.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -44,9 +43,6 @@ header("refresh:2;url=../index.php");
                     <p class="card-text text-muted mb-4">
                         You have been successfully logged out from the admin panel.
                     </p>
-                    <p class="text-muted small">
-                        Redirecting to home page in <span id="countdown">2</span> seconds...
-                    </p>
                     <div class="mt-4">
                         <a href="../pages/index.php" class="btn btn-primary">
                             <i class="bi bi-house-door me-2"></i>Go to Home Page
@@ -57,20 +53,6 @@ header("refresh:2;url=../index.php");
         </div>
     </div>
 
-    <script>
-        // Countdown timer
-        let countdown = 2;
-        const countdownElement = document.getElementById('countdown');
-        
-        const timer = setInterval(() => {
-            countdown--;
-            countdownElement.textContent = countdown;
-            
-            if (countdown <= 0) {
-                clearInterval(timer);
-                window.location.href = '../index.php';
-            }
-        }, 1000);
-    </script>
+
 </body>
 </html>

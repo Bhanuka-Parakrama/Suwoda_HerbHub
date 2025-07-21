@@ -38,15 +38,15 @@ $blogs = Blog::showDetail($conn);  // Get all blogs
 
       <?php if ($blogs): ?>
         <?php foreach ($blogs as $blog): ?>
-          <div class="card shadow card-hover" style="min-width: 300px;">
+          <div class="card shadow card-hover" style="min-width: 220px; max-width: 350px;">
             <img src="<?php echo htmlspecialchars($blog['image']); ?>" class="card-img-top" alt="Blog Image">
             <div class="card-body">
               <h5 class="card-title"><?php echo htmlspecialchars($blog['title']); ?></h5>
-              <p class="card-text"><?php echo htmlspecialchars(substr($blog['content'], 0, 100)) . '...'; ?></p>
+              <p class="card-text"><?php echo nl2br(htmlspecialchars($blog['content'])); ?></p>
               <p class="card-text text-muted">
                 <small>Published on: <?php echo htmlspecialchars($blog['published_date']); ?></small>
               </p>
-              <a href="blog_detail.php?id=<?php echo $blog['blog_id']; ?>" class="btn btn-success">Read More</a>
+              <!-- <a href="blog_detail.php?id=<?php echo $blog['blog_id']; ?>" class="btn btn-success">Read More</a> -->
             </div>
           </div>
         <?php endforeach; ?>
