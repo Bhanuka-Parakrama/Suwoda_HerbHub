@@ -6,31 +6,35 @@ $message = '';
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
+    $name = $_POST['name'] ?? '';
+    $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
-    $phone = trim($_POST['phone'] ?? '');
-    $address = trim($_POST['address'] ?? '');
+    $phone = $_POST['phone'] ?? '';
+    $address = $_POST['address'] ?? '';
 
-    if ($name && $email && $password && $phone && $address) {
+    if (!$name || !$email || !$password || !$phone || !$address) {
+        $error = "All fields are required.";
+    } else {
         $guest = new GuestUser();
         $result = $guest->registerUser($conn, $name, $email, $password, $phone, $address);
 
         if ($result === true) {
-            $message = "Registration successful! You can now login.";
-            // header("Location: login_form.php");
-            // exit();
+            $message = "Registration successful! Please check your email to verify.";
         } else {
-            $error = $result;  // error message from registerUser method
+            $error = $result;
         }
-    } else {
-        $error = "All fields are required.";
     }
 }
-
-include '../includes/header.php';
 ?>
 
+<head>
+<title>User Registration - Suwoda HerbHub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
 <style>
   body,
   html {
@@ -76,6 +80,13 @@ include '../includes/header.php';
     box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
   }
 </style>
+</head>
+
+<?php
+include '../includes/header.php';
+?>
+
+<body>
 
 <div class="center-container">
   <div class="form-border">
@@ -162,6 +173,13 @@ include '../includes/header.php';
     </div>
   </div>
 </div>
+</div>
+
+ <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+</body>
 
 <?php
 include '../includes/footer.php';

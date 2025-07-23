@@ -2,6 +2,23 @@
 // Handle logout BEFORE any output
 session_start();
 require_once '../classes/RegisterUser.php';
+require_once '../includes/dbconnect.php';
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../index.php');
+    exit();
+}
+
+// Fetch user details
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT name FROM user WHERE user_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$stmt->bind_result($name);
+$stmt->fetch();
+$stmt->close();
 
 if (isset($_GET['logout'])) {
     $user = new RegisteredUser();
@@ -33,6 +50,7 @@ if (isset($_GET['logout'])) {
           ></div>
           <div>
             <h1 class="h3 mb-0">Your Profile</h1>
+            <p class="mb-1"><strong>Name:</strong> <?php echo htmlspecialchars($name); ?></p>
           </div>
         </div>
         <div class="d-flex gap-2">
@@ -58,107 +76,7 @@ if (isset($_GET['logout'])) {
               </tr>
             </thead>
             <tbody>
-              <!-- Example Past Order -->
-              <tr>
-                <td>#1001</td>
-                <td>2025-06-20</td>
-                <td>Wireless Mouse, USB-C Cable</td>
-                <td><span class="badge bg-success">Delivered</span></td>
-                <td>
-                  <button
-                    class="btn btn-success btn-sm"
-                    onclick="toggleReview('review1')"
-                  >
-                    Add Review
-                  </button>
-                  <form class="review-form mt-2" id="review1">
-                    <textarea
-                      class="form-control mb-2"
-                      placeholder="Write your review..."
-                    ></textarea>
-                    <button type="submit" class="btn btn-success btn-sm">
-                      Submit
-                    </button>
-                  </form>
-                </td>
-                <td>
-                  <span class="text-success">Delivered on 2025-06-22</span
-                  ><br />
-                  <a href="#" class="link-success text-decoration-underline"
-                    >View Details</a
-                  >
-                </td>
-              </tr>
-              <!-- Example Present Order -->
-              <tr>
-                <td>#1002</td>
-                <td>2025-07-03</td>
-                <td>Bluetooth Headphones</td>
-                <td><span class="badge bg-primary">Delivering</span></td>
-                <td></td>
-                <td>
-                  <div class="progress mb-1" style="height: 8px">
-                    <div
-                      class="progress-bar bg-success"
-                      role="progressbar"
-                      style="width: 80%"
-                      aria-valuenow="80"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                  <small>Out for delivery - Expected by 2025-07-05</small><br />
-                  <a href="#" class="link-success text-decoration-underline"
-                    >Track Package</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>#1003</td>
-                <td>2025-07-04</td>
-                <td>Smart Watch</td>
-                <td><span class="badge bg-info text-dark">Dispatched</span></td>
-                <td></td>
-                <td>
-                  <div class="progress mb-1" style="height: 8px">
-                    <div
-                      class="progress-bar bg-info"
-                      role="progressbar"
-                      style="width: 50%"
-                      aria-valuenow="50"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                  <small>Dispatched from warehouse</small><br />
-                  <a href="#" class="link-info text-decoration-underline"
-                    >Track Package</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>#1004</td>
-                <td>2025-07-05</td>
-                <td>Fitness Band</td>
-                <td><span class="badge bg-warning text-dark">Packing</span></td>
-                <td></td>
-                <td>
-                  <div class="progress mb-1" style="height: 8px">
-                    <div
-                      class="progress-bar bg-warning"
-                      role="progressbar"
-                      style="width: 20%"
-                      aria-valuenow="20"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                  <small>Packing order</small><br />
-                  <a href="#" class="link-warning text-decoration-underline"
-                    >Track Package</a
-                  >
-                </td>
-              </tr>
+              <!-- No rows, only headers -->
             </tbody>
           </table>
         </div>
