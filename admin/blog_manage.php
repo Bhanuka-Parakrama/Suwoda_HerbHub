@@ -1,143 +1,255 @@
 <?php
 session_start();
-require_once '../includes/dbconnect.php'; // DB connection
-require_once '../classes/adminClass.php';  // Blog class
+include '../includes/dbconnect.php';
+include '../classes/adminClass.php';
 
-$blogObj = new Admin();
+$admin = new Admin();
 
-// Add Blog
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['title'], $_POST['content'], $_POST['createdDate'])) {
+// Add new blog
+if(isset($_POST['add_blog'])){
     $title = $_POST['title'];
     $content = $_POST['content'];
-    $createdDate = $_POST['createdDate'];
-
-    // Image upload
-    $imagePath = null;
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
-        $targetDir = "../assets/images/uploads";
-        if (!is_dir($targetDir)) {
-            mkdir($targetDir, 0755, true);
+    $date = $_POST['date'];
+    $image = "";
+   
+    if($_FILES['image']['name'] != ""){
+        $filename = time() . "_" . $_FILES['image']['name']; 
+        
+        if (!file_exists('../uploads/blogs/')) {
+            mkdir('../uploads/blogs/', 0777, true);
         }
-        $imageName = time() . "_" . basename($_FILES["image"]["name"]);
-        $imagePath = $targetDir . $imageName;
-        move_uploaded_file($_FILES["image"]["tmp_name"], $imagePath);
+        
+        if(move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)){
+            $image = $filename;
+        }
     }
-
-    $blogObj->addBlog($conn, $title, $content, $imagePath);
-    header("Location: blog_manage.php");
-    exit();
+    
+    $sql = "INSERT INTO blog (title, content, image, published_date) VALUES ('$title', '$content', '$image', '$date')";
+    if($conn->query($sql)){
+        echo "<script>alert('Blog added successfully!'); window.location='blog_manage.php';</script>";
+    }
 }
 
-// Delete Blog
-if (isset($_GET['delete'])) {
-    $blogId = intval($_GET['delete']);
-    $blogObj->deleteBlog($conn, $blogId);
-    header("Location: blog_manage.php");
-    exit();
+// Delete blog
+if(isset($_GET['delete'])){
+    $blog_id = $_GET['delete'];
+    
+    $img_query = $conn->query("SELECT image FROM blog WHERE blog_id = $blog_id");
+    if($img_row = $img_query->fetch_assoc()){
+        $image_value = $img_row['image'];
+        
+        if(strpos($image_value, '../assets/images/uploads') === 0) {
+            $image_file = $image_value;
+        } else {
+            $image_file = '../uploads/blogs/' . $image_value;
+        }
+        
+        if(file_exists($image_file) && !empty($image_value)){
+            unlink($image_file);
+        }
+    }
+    
+    $delete_sql = "DELETE FROM blog WHERE blog_id = $blog_id";
+    if($conn->query($delete_sql)){
+        echo "<script>alert('Blog deleted!'); window.location='blog_manage.php';</script>";
+    }
 }
 
-// View Blogs
-$blogs = Admin::viewBlogs($conn);
+// Get all blogs
+$blogs = $conn->query("SELECT * FROM blog ORDER BY published_date DESC");
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8" />
     <title>Blog Management</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
     <style>
-        .form-section {
-            border: 2px solid #0d6efd;
-            border-radius: 15px;
-            padding: 30px;
-            background: #ffffff;
-            box-shadow: 0 10px 30px rgba(13, 110, 253, 0.1);
-            margin-bottom: 30px;
+      .blog-title { color: #28a745; border-bottom: 2px solid #28a745; padding-bottom: 10px; }
+        .add-form { 
+            border: 2px solid #28a745; 
+            padding: 1.25rem; 
+            margin-bottom: 2rem; 
+            border-radius: .5rem; 
+            background: #f8fff8; 
         }
-        img.thumb {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
+        .blog-image { 
+            width: 60px; 
+            height: 60px; 
+        }
+        .no-image { 
+            width: 60px; 
+            height: 60px; 
+            background: #e9fbe7; 
+            border: 1px dashed #28a745; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: .3rem; 
+            font-size: .8rem; 
+            color: #6e806dff; 
+        }
+        .btn-back {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .btn-back:hover {
+            background-color: #218838;
+        }
+        .fix-btn {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #212529;
+            font-size: .7rem;
+            padding: .2rem .5rem;
+        }
+        .table-success {
+            background-color: #e9fbe7;
+        }
+        .text-success {
+            color: #28a745 !important;
+        }
+        .border-success {
+            border-color: #28a745 !important;
         }
     </style>
 </head>
+
 <body>
-    <div class="container mt-4">
-        <div class="form-section">
-            <a href="dashbord.php" class="btn btn-primary mb-3">
-                <i class="bi bi-arrow-left-circle me-1"></i> Back to Dashboard
-            </a>
-            <h2 class="mb-4 text-primary"><i class="bi bi-journal-text me-2"></i>Blog Management</h2>
-            <form id="blogForm" method="POST" enctype="multipart/form-data">
+    <?php include './admin_header.php'; ?>
+
+<div class="container">
+    <div class="main-container">
+        <div class="mb-4"></div>
+        <a href="dashbord.php" class="btn btn-success mb-2">Back</a>
+        <h2 class="blog-title">Blog Management</h2>
+        <?php
+        $wrong_path_check = $conn->query("SELECT COUNT(*) as count FROM blog WHERE image LIKE '../assets/images/uploads%'");
+        $wrong_count = $wrong_path_check->fetch_assoc()['count'];
+        if($wrong_count > 0):
+        ?>
+        
+        <?php endif; ?>
+
+        <?php
+        if(isset($_GET['fix_paths'])){
+            $fix_query = "SELECT blog_id, image FROM blog WHERE image LIKE '../assets/images/uploads%'";
+            $fix_result = $conn->query($fix_query);
+            
+            while($fix_row = $fix_result->fetch_assoc()){
+                $old_path = $fix_row['image'];
+                $filename = basename($old_path);
+                
+                $update_sql = "UPDATE blog SET image = '$filename' WHERE blog_id = " . $fix_row['blog_id'];
+                $conn->query($update_sql);
+            }
+            
+            echo "<script>alert('Image paths fixed!'); window.location='blog_manage.php';</script>";
+        }
+        ?>
+
+        <!--Blog Form -->
+        <div class="add-form">
+            <h4>Add New Blog Post</h4>
+            <form method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label class="form-label">Blog Title:</label>
+                        <input type="text" name="title" class="form-control" placeholder="Enter blog title" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Published Date:</label>
+                        <input type="date" name="date" class="form-control" required>
+                    </div>
+                </div>
+                
                 <div class="mb-3">
-                    <label for="blogTitle" class="form-label">Blog Title</label>
-                    <input type="text" class="form-control" id="blogTitle" name="title" required />
+                    <label class="form-label">Blog Content:</label>
+                    <textarea name="content" class="form-control" rows="5" placeholder="Write your blog content here..." required></textarea>
                 </div>
+                
                 <div class="mb-3">
-                    <label for="blogImage" class="form-label">Blog Image</label>
-                    <input class="form-control" type="file" id="blogImage" name="image" accept="image/*" />
+                    <label class="form-label">Blog Image:</label>
+                    <input type="file" name="image" class="form-control" accept="image/*">
                 </div>
-                <div class="mb-3">
-                    <label for="blogContent" class="form-label">Content</label>
-                    <textarea class="form-control" id="blogContent" name="content" rows="3" placeholder="Enter blog content"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="createdDate" class="form-label">Created Date</label>
-                    <input type="date" class="form-control" id="createdDate" name="createdDate" required />
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Save Blog</button>
-                </div>
+                
+                <button type="submit" name="add_blog" class="btn btn-success">Add Blog Post</button>
             </form>
         </div>
 
-        <div class="table-section">
-            <h4 class="mb-3">Blog List</h4>
-            <div class="table-responsive">
-                <table class="table table-bordered align-middle">
-                    <thead class="table-primary">
+        <!-- Blog List -->
+        <h3 class="mb-3 text-success">All Blog Posts</h3>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered align-middle">
+                <thead class="table-success">
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Image</th>
+                        <th>Content</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if($blogs->num_rows > 0): ?>
+                        <?php while($blog = $blogs->fetch_assoc()): ?>
                         <tr>
-                            <th>Blog ID</th>
-                            <th>Title</th>
-                            <th>Image</th>
-                            <th>Content</th>
-                            <th>Created Date</th>
-                            <th>Actions</th>
+                            <td><?php echo $blog['blog_id']; ?></td>
+                            <td><?php echo htmlspecialchars($blog['title']); ?>
+                            <td>
+                                <?php if(!empty($blog['image'])): ?>
+                                    <?php
+                                    $image_src = '';
+                                    if(strpos($blog['image'], '../assets/images/uploads') === 0) {
+                                        $image_src = $blog['image'];
+                                    } else {
+                                        $image_src = '../uploads/blogs/' . $blog['image'];
+                                    }
+                                    ?>
+                                    <img src="<?php echo $image_src; ?>"
+                                        class="blog-image"
+                                         alt="Blog Image"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <div class="no-image" style="display:none;">
+                                        No Image<br>
+                                        <small><?php echo htmlspecialchars(basename($blog['image'])); ?></small>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="no-image">No Image</div>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php 
+                                $short_content = substr($blog['content'], 0, 100);
+                                echo $short_content;
+                                if(strlen($blog['content']) > 100) echo "<span class='text-success'>...</span>";
+                                ?>
+                            </td>
+                            <td><span><?php echo date('M d, Y', strtotime($blog['published_date'])); ?></span></td>
+                            <td>
+                                <a href="?delete=<?php echo $blog['blog_id']; ?>" 
+                                   class="btn btn-sm btn-danger mb-1" 
+                                   onclick="return confirm('Are you sure you want to delete this blog?')">
+                                   Delete
+                                </a>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (!empty($blogs)): ?>
-                            <?php foreach ($blogs as $blog): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($blog['blog_id']) ?></td>
-                                    <td><?= htmlspecialchars($blog['title']) ?></td>
-                                    <td>
-                                        <?php if (!empty($blog['image'])): ?>
-                                            <img src="<?= htmlspecialchars($blog['image']) ?>" class="thumb" />
-                                        <?php else: ?>
-                                            No Image
-                                        <?php endif; ?>
-                                    </td>
-                                    <td><?= htmlspecialchars($blog['content']) ?></td>
-                                    <td><?= htmlspecialchars($blog['published_date']) ?></td>
-                                    <td>
-                                        <a href="?delete=<?= $blog['blog_id'] ?>" class="btn btn-danger btn-sm"
-                                           onclick="return confirm('Are you sure you want to delete this blog?');">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr><td colspan="6" class="text-center">No blogs found</td></tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No blog posts found</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
         </div>
+
     </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+    <?php include './admin_footer.php'; ?>
 </body>
 </html>

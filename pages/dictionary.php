@@ -1,147 +1,116 @@
+<?php
+include '../includes/dbconnect.php';
+
+// Get selected letter from GET
+$selected_letter = isset($_GET['letter']) ? $_GET['letter'] : '';
+
+$herbs = [];
+if ($selected_letter) {
+    $sql = "SELECT * FROM herb WHERE name LIKE '$selected_letter%' ORDER BY name";
+    $result = $conn->query($sql);
+    while ($row = $result->fetch_assoc()) {
+        $herbs[] = $row;
+    }
+}
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Herbal Dic - Suwoda HerbHub</title>
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
-    crossorigin="anonymous"
-  />
-  <link rel="stylesheet" href="../assets/styles.css" />
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    main {
-      flex: 1;
-    }
-
-    .card-hover:hover {
-      transform: scale(1.03);
-      transition: 0.3s ease;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Herbal Dictionary - Suwoda HerbHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/styles.css">
+    <style>
+        .herb-card:hover { transform: scale(1.05); transition: 0.3s; }
+        .letter-btn { width: 50px; height: 50px; margin: 2px; }
+        .herb-image { 
+            height: 180px; 
+            object-fit: cover; 
+            border-bottom: 1px solid #ddd; 
+        }
+        
+    </style>
 </head>
+
 <body>
+    <?php include '../includes/header.php'; ?>
 
-  <?php include '../includes/header.php'; ?>
-
-  <main>
     <div class="container py-5 mt-5">
-      <h2 class="text-center mb-5 section-title text-dark" style="font-size: 2rem;">Herbal Dictionary</h2>
-
-      <!-- Letter Buttons -->
-      <div id="letters-container" class="row g-2 mb-4 justify-content-center"></div>
-
-      <!-- Herbal Entries -->
-      <div id="entries-container" class="row row-cols-1 row-cols-md-3 g-4"></div>
+        <h2 class="text-center mb-5 text-success">Herbal Dictionary</h2>
+        
+        <!-- Letter Navigation -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-12 text-center">
+                <div id="letter-buttons" class="d-flex flex-wrap justify-content-center gap-2">
+                    <?php
+                    $alphabet = range('A', 'Z');
+                    foreach ($alphabet as $letter) {
+                        $active = ($selected_letter == $letter) ? 'selected-letter' : '';
+                        echo '<a href="?letter='.$letter.'" class="btn btn-outline-success letter-btn rounded-circle shadow-sm '.$active.'">'.$letter.'</a>';
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row" id="herb-results">
+            <?php if (!$selected_letter): ?>
+                <div class="col-12">
+                    <div class="text-center">
+                        <div class="alert alert-warning d-inline-block">
+                            <strong>Select a letter to browse herbs</strong>
+                        </div>
+                    </div>
+                </div>
+            <?php elseif (empty($herbs)): ?>
+                <div class="col-12">
+                    <div class="text-center">
+                        <div class="alert alert-danger w-25 mx-auto text-center" role="alert">
+                            <strong>No herbs found for letter "<?php echo($selected_letter); ?>"</strong>
+                        </div>
+                    </div>
+                </div>
+            <?php else: ?>
+                <?php foreach ($herbs as $herb): ?>
+                    <div class="col-md-4 mb-4 d-flex align-items-stretch">
+                        <div class="card h-100 border-success shadow-sm">
+                            <?php if (!empty($herb['image'])): ?>
+                                <img src="../uploads/herbs/<?php echo $herb['image']; ?>" 
+                                     class="card-img-top herb-image" 
+                                     alt="<?php echo $herb['name']; ?>"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="no-image d-none">
+                                    <span>No Image Available</span>
+                                </div>
+                            <?php else: ?>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>No Image Available</span>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title mb-2"><?php echo $herb['name']; ?></h5>
+                                <p class="card-text mb-1">
+                                    <span class="fw-semibold">Scientific Name:</span>
+                                    <em><?php echo $herb['scientific_name']; ?></em>
+                                </p>
+                                <p class="card-text mb-2">
+                                    <span class="fw-semibold">Uses:</span><br>
+                                    <?php echo nl2br($herb['uses']); ?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
     </div>
-  </main>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
-  <?php include '../includes/footer.php'; ?>
-
-  <script>
-    const dictionary = {
-      A: [
-        {
-          word: "Ashwagandha",
-          meaning: "An adaptogenic herb used to reduce stress.",
-          image: "https://via.placeholder.com/300x180?text=Ashwagandha"
-        },
-        {
-          word: "Aloe Vera",
-          meaning: "Succulent plant used for skin healing.",
-          image: "https://via.placeholder.com/300x180?text=Aloe+Vera"
-        },
-      ],
-      B: [
-        {
-          word: "Brahmi",
-          meaning: "Herb known to enhance memory and concentration.",
-          image: "https://via.placeholder.com/300x180?text=Brahmi"
-        },
-        {
-          word: "Basil",
-          meaning: "Aromatic herb used in cooking and medicine.",
-          image: "https://via.placeholder.com/300x180?text=Basil"
-        },
-      ],
-      C: [
-        {
-          word: "Chyawanprash",
-          meaning: "Herbal jam used as a health tonic.",
-          image: "https://via.placeholder.com/300x180?text=Chyawanprash"
-        },
-        {
-          word: "Chamomile",
-          meaning: "Flower used to calm nerves and aid sleep.",
-          image: "https://via.placeholder.com/300x180?text=Chamomile"
-        },
-      ],
-      // Add more herbs as needed
-    };
-
-    const lettersContainer = document.getElementById("letters-container");
-    const entriesContainer = document.getElementById("entries-container");
-
-    for (let i = 65; i <= 90; i++) {
-      const letter = String.fromCharCode(i);
-      const col = document.createElement("div");
-      col.className = "col-auto";
-
-      const btn = document.createElement("button");
-      btn.textContent = letter;
-      btn.className = "btn btn-success letter-btn";
-      btn.addEventListener("click", () => showEntries(letter));
-
-      col.appendChild(btn);
-      lettersContainer.appendChild(col);
-    }
-
-    function showEntries(letter) {
-      entriesContainer.innerHTML = "";
-
-      if (!dictionary[letter] || dictionary[letter].length === 0) {
-        entriesContainer.innerHTML = `
-          <div class="col-12">
-            <div class="alert alert-warning text-center">
-              No entries found for "<strong>${letter}</strong>".
-            </div>
-          </div>`;
-        return;
-      }
-
-      dictionary[letter].forEach(({ word, meaning, image }) => {
-        const col = document.createElement("div");
-        col.className = "col";
-
-        col.innerHTML = `
-          <div class="card h-100 shadow-sm card-hover">
-            <img src="${image}" class="card-img-top" alt="${word}" />
-            <div class="card-body">
-              <h5 class="card-title">${word}</h5>
-              <p class="card-text">${meaning}</p>
-            </div>
-          </div>
-        `;
-
-        entriesContainer.appendChild(col);
-      });
-    }
-  </script>
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
-    crossorigin="anonymous">
-  </script>
-
+    
+    <?php include '../includes/footer.php'; ?>
 </body>
 </html>

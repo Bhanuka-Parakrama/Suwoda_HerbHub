@@ -32,35 +32,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <style>
         .admin-login-form {
-            border: 2px solid #0d6efd;
+            border: 2px solid #28a745;
             border-radius: 15px;
             padding: 30px;
             background: #ffffff;
-            box-shadow: 0 10px 30px rgba(13, 110, 253, 0.1);
+            box-shadow: 0 10px 30px rgba(40, 167, 69, 0.1);
             margin-top: 50px;
         }
-        
-        .btn-primary {
-            background-color: #0d6efd !important;
-            border-color: #0d6efd !important;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            background-color: #0b5ed7 !important;
-            border-color: #0a58ca !important;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
-        }
+         
         
         .form-control:focus {
-            border-color: #0d6efd !important;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
+            border-color: #28a745 !important;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
         }
         
-        body {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            min-height: 100vh;
+        .text-success {
+            color: #28a745 !important;
         }
     </style>
 </head>
@@ -69,11 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
             <div class="admin-login-form">
-                <a href="../pages/index.php" class="btn btn-primary mb-3">
+                <a href="../pages/index.php" class="btn btn-success mb-3">
                     <i class="bi bi-arrow-left-circle me-1"></i> Back to Home
                 </a>
                 <div class="text-center mb-4">
-                    <h2 class="text-primary"><i class="bi bi-person-circle me-2"></i>Admin Login</h2>
+                    <h2 class="text-success"><i class="bi bi-person-circle me-2"></i>Admin Login</h2>
                     <p class="text-muted">Please enter your email to access HerbHub Admin</p>
                 </div>
 
@@ -97,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                placeholder="Enter your password" required />
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100">
+                    <button type="submit" class="btn btn-success w-100">
                         <i class="bi bi-box-arrow-in-right me-1"></i>Login
                     </button>
                 </form>

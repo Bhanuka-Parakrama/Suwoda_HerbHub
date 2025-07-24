@@ -1,30 +1,25 @@
 <?php
 
 class Admin {
-    private $admin_id;
-    private $name;
-    private $email;
-    private $password;
+    // admin properties
+    public $admin_id;
+    public $name;
+    public $email;
+    public $password;
 
-    public function __construct($name = "", $email = "", $password = "") {
+    // constructor
+    function __construct($name = "", $email = "", $password = "") {
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
     }
 
-    public static function login($conn, $email, $password) {
-        $query = "SELECT * FROM admin WHERE email = ? AND password = ?";
-        $stmt = $conn->prepare($query);
-
-        if (!$stmt) {
-            die("Prepare failed: " . $conn->error); // ✅ helpful debug
-        }
-
-        $stmt->bind_param("ss", $email, $password);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result && $result->num_rows === 1) {
+    // admin login function
+    function adminLogin($conn, $email, $password) {
+        $sql = "SELECT * FROM admin WHERE email = '$email' AND password = '$password'";
+        $result = $conn->query($sql);
+        
+        if ($result->num_rows > 0) {
             $admin = $result->fetch_assoc();
             $_SESSION['admin_id'] = $admin['admin_id'];
             $_SESSION['admin_email'] = $admin['email'];
@@ -33,161 +28,155 @@ class Admin {
             return false;
         }
     }
-
     
-    // Logout
-    public static function logout() {
+    // admin logout
+    function adminLogout() {
         session_start();
-        session_unset();
         session_destroy();
     }
 
-  
-
-    
-    //categories management
-
-    public function getAllCategories($conn) {
-        $query = "SELECT * FROM category ORDER BY category_id DESC";
-        $result = $conn->query($query);
-        return $result;
+    // get all categories
+    function getCategories($conn) {
+        $sql = "SELECT * FROM category ORDER BY category_id DESC";
+        return $conn->query($sql);
     }
 
-
-    public function updateCategory($conn, $category_id, $newName) {
-        $query = "UPDATE category SET name = ? WHERE category_id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("si", $newName, $category_id);
-        return $stmt->execute();
+    // add new category
+    function addCategory($conn, $categoryName) {
+        $sql = "INSERT INTO category (name) VALUES ('$categoryName')";
+        return $conn->query($sql) ? true : false;
     }
 
-    public function deleteCategory($conn, $category_id) {
-        $query = "DELETE FROM category WHERE category_id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $category_id);
-        return $stmt->execute();
+    // update category
+    function editCategory($conn, $category_id, $newName) {
+        $sql = "UPDATE category SET name = '$newName' WHERE category_id = $category_id";
+        return $conn->query($sql) ? true : false;
     }
 
- 
-    //product management
-public function addProduct($conn, $product_name, $name, $price, $quantity, $imagePath, $description) {
-        $stmt = $conn->prepare("SELECT category_id FROM category WHERE name = ?");
-        $stmt->bind_param("s", $name);
-        $stmt->execute();
-        $stmt->bind_result($category_id);
-        $stmt->fetch();
-        $stmt->close();
-
-        $query = "INSERT INTO product (product_name, category_id, price, quantity, image, description)
-                  VALUES (?, ?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("siddss", $product_name, $category_id, $price, $quantity, $imagePath, $description);
-        return $stmt->execute();
+    // delete category
+    function removeCategory($conn, $category_id) {
+        $sql = "DELETE FROM category WHERE category_id = $category_id";
+        return $conn->query($sql) ? true : false;
     }
 
-    public static function getProducts($conn) {
-        $query = "SELECT p.*, c.name FROM product p JOIN category c ON p.category_id = c.category_id";
-        return $conn->query($query);
+    // add new product
+    function addNewProduct($conn, $product_name, $category_name, $price, $quantity, $image, $description) {
+        // first get category id
+        $cat_sql = "SELECT category_id FROM category WHERE name = '$category_name'";
+        $cat_result = $conn->query($cat_sql);
+        $cat_row = $cat_result->fetch_assoc();
+        $category_id = $cat_row['category_id'];
+        
+        // then insert product
+        $sql = "INSERT INTO product (product_name, category_id, price, quantity, image, description) VALUES ('$product_name', $category_id, $price, $quantity, '$image', '$description')";
+        
+        return $conn->query($sql) ? true : false;
     }
 
-    public function deleteProduct($conn, $id) {
-        $stmt = $conn->prepare("DELETE FROM product WHERE product_id = ?");
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
+    // get all products
+    function getAllProducts($conn) {
+        $sql = "SELECT p.*, c.name FROM product p JOIN category c ON p.category_id = c.category_id";
+        return $conn->query($sql);
     }
 
-    public function updateProduct($conn, $id, $product_name, $category_name, $price, $quantity, $imagePath, $description) {
-        $stmt = $conn->prepare("SELECT category_id FROM category WHERE name = ?");
-        $stmt->bind_param("s", $category_name); // Fix: change $name to $category_name
-        $stmt->execute();
-        $stmt->bind_result($category_id);
-        $stmt->fetch();
-        $stmt->close();
-
-        $query = "UPDATE product SET product_name=?, category_id=?, price=?, quantity=?, image=?, description=? WHERE product_id=?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("siddssi", $product_name, $category_id, $price, $quantity, $imagePath, $description, $id);
-        return $stmt->execute();
+    // delete product
+    function removeProduct($conn, $product_id) {
+        $sql = "DELETE FROM product WHERE product_id = $product_id";
+        return $conn->query($sql) ? true : false;
     }
 
-    public static function getCategories($conn) {
-        return $conn->query("SELECT * FROM category");
+    // update product
+    function editProduct($conn, $product_id, $product_name, $category_name, $price, $quantity, $image, $description) {
+        // get category id first
+        $cat_sql = "SELECT category_id FROM category WHERE name = '$category_name'";
+        $cat_result = $conn->query($cat_sql);
+        $cat_row = $cat_result->fetch_assoc();
+        $category_id = $cat_row['category_id'];
+        
+        // update product
+        $sql = "UPDATE product SET product_name='$product_name', category_id=$category_id, price=$price, quantity=$quantity, image='$image', description='$description' WHERE product_id=$product_id";
+        
+        return $conn->query($sql) ? true : false;
     }
 
-   
-
-    //user management
-
-    public function getAllUsers($conn) {
-        $query = "SELECT * FROM user WHERE user_type = 'registered'";
-        $result = $conn->query($query);
-        return $result;
+    // get all users
+    function getAllUsers($conn) {
+        $sql = "SELECT * FROM user WHERE user_type = 'registered'";
+        return $conn->query($sql);
     }
 
-    public function updateOrderStatus($conn, $order_id, $status) {
-        $query = "UPDATE `order` SET status = ? WHERE order_id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("si", $status, $order_id);
-        return $stmt->execute();
+    // update order status
+    function changeOrderStatus($conn, $order_id, $status) {
+        $sql = "UPDATE `order` SET status = '$status' WHERE order_id = $order_id";
+        return $conn->query($sql) ? true : false;
+    }
+// Add blog - simple version
+function addBlog($conn, $title, $content, $image, $date) {
+    $sql = "INSERT INTO blog (title, content, image, published_date) VALUES ('$title', '$content', '$image', '$date')";
+    return $conn->query($sql);
+}
+
+// Get all blogs - simple version  
+function getBlogs($conn) {
+    $sql = "SELECT * FROM blog ORDER BY published_date DESC";
+    return $conn->query($sql);
+}
+
+// Delete blog - simple version
+function deleteBlog($conn, $blog_id) {
+    $sql = "DELETE FROM blog WHERE blog_id = $blog_id";
+    return $conn->query($sql);
+}
+
+// Get single blog
+function getBlog($conn, $blog_id) {
+    $sql = "SELECT * FROM blog WHERE blog_id = $blog_id";
+    $result = $conn->query($sql);
+    return $result->fetch_assoc();
+}
+
+
+    // add new herb
+    function addNewHerb($conn, $name, $scientific_name, $uses, $image) {
+        $sql = "INSERT INTO herb (name, scientific_name, uses, image) VALUES ('$name', '$scientific_name', '$uses', '$image')";
+        return $conn->query($sql) ? true : false;
     }
 
-
-    //blog management
-
-    public function addBlog($conn, $title, $content, $imagePath) {
-        $query = "INSERT INTO blog (title, content, image, published_date) VALUES (?, ?, ?, NOW())";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("sss", $title, $content, $imagePath);
-        return $stmt->execute();
+    // add discount
+    function addProductDiscount($conn, $product_id, $discount_percent, $start_date, $end_date) {
+        $sql = "INSERT INTO discount (product_id, discount_percent, start_date, end_date) VALUES ($product_id, $discount_percent, '$start_date', '$end_date')";
+        return $conn->query($sql) ? true : false;
     }
 
-    public static function viewBlogs($conn) {
-        $query = "SELECT * FROM blog ORDER BY published_date DESC";
-        $result = $conn->query($query);
-        $blogs = [];
-
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $blogs[] = $row;
-            }
-        }
-        return $blogs;
+    // get monthly sales report
+    function getSalesReport($conn, $month, $year) {
+        $sql = "SELECT * FROM `order` WHERE MONTH(order_date) = $month AND YEAR(order_date) = $year";
+        return $conn->query($sql);
     }
 
-    public function deleteBlog($conn, $blog_id) {
-        $query = "DELETE FROM blog WHERE blog_id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $blog_id);
-        return $stmt->execute();
+    // get total orders
+    function getTotalOrders($conn) {
+        $sql = "SELECT COUNT(*) as total FROM `order`";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        return $row['total'];
     }
 
-
-
-
-    //herb management
-    public function addHerb($conn, $name, $sci_name, $uses, $image) {
-        $query = "INSERT INTO herb (name, scientific_name, uses, image)
-                  VALUES (?, ?, ?, ?)";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("ssss", $name, $sci_name, $uses, $image);
-        return $stmt->execute();
+    // get total users
+    function getTotalUsers($conn) {
+        $sql = "SELECT COUNT(*) as total FROM user WHERE user_type = 'registered'";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        return $row['total'];
     }
 
-    public function addDiscount($conn, $product_id, $percent, $start_date, $end_date) {
-        $query = "INSERT INTO discount (product_id, discount_percent, start_date, end_date)
-                  VALUES (?, ?, ?, ?)";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("idss", $product_id, $percent, $start_date, $end_date);
-        return $stmt->execute();
-    }
-
-    // Generate Monthly Sales Report
-    public function getMonthlySalesReport($conn, $month, $year) {
-        $query = "SELECT * FROM `order` WHERE MONTH(order_date) = ? AND YEAR(order_date) = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("ii", $month, $year);
-        $stmt->execute();
-        return $stmt->get_result();
+    // get total products
+    function getTotalProducts($conn) {
+        $sql = "SELECT COUNT(*) as total FROM product";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        return $row['total'];
     }
 }
+
 ?>

@@ -14,7 +14,7 @@
 <body class="d-flex flex-column min-vh-100">
 
     <!-- Header with Logo -->
-    <header class="bg-primary text-white py-3 mb-4 position-relative">
+    <header class="bg-success text-white py-3 mb-4 position-relative">
         <img src="../assets/images/Logo.jpg" alt="Logo"
              style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%; position: absolute; left: 48px; top: 50%; transform: translateY(-50%); border: 3px solid #fff;">
         <h1 class="mb-0 text-center" style="margin:0; font-size:2.5rem;">
@@ -31,12 +31,12 @@
         </div>
         <div class="row g-4 mb-3">
             <div class="col-md-6 col-sm-12 d-flex justify-content-center">
-                <button type="button" onclick="location.href='category_manage.php'" class="btn btn-primary btn-lg" style="width:400px; height:70px;">
+                <button type="button" onclick="location.href='category_manage.php'" class="btn btn-success btn-lg" style="width:400px; height:70px;">
                     <i class="bi bi-tags me-2"></i>Manage Categories
                 </button>
             </div>
             <div class="col-md-6 col-sm-12 d-flex justify-content-center">
-                <button type="button" onclick="location.href='product_manage.php'" class="btn btn-primary btn-lg" style="width:400px; height:70px;">
+                <button type="button" onclick="location.href='product_manage.php'" class="btn btn-success btn-lg" style="width:400px; height:70px;">
                     <i class="bi bi-box-seam me-2"></i>Manage Products
                 </button>
             </div>
@@ -44,31 +44,31 @@
         </div>
         <div class="row g-4 mb-3">
             <div class="col-md-6 col-sm-12 d-flex justify-content-center">
-                <button type="button" onclick="location.href='manage_users.php'" class="btn btn-primary btn-lg" style="width:400px; height:70px;">
+                <button type="button" onclick="location.href='manage_users.php'" class="btn btn-success btn-lg" style="width:400px; height:70px;">
                     <i class="bi bi-people me-2"></i>Manage Users
                 </button>
             </div>
             <div class="col-md-6 col-sm-12 d-flex justify-content-center">
-                <button type="button" onclick="location.href='manage_orders.php'" class="btn btn-primary btn-lg" style="width:400px; height:70px;">
+                <button type="button" onclick="location.href='manage_orders.php'" class="btn btn-success btn-lg" style="width:400px; height:70px;">
                     <i class="bi bi-bag-check me-2"></i>Manage Orders
                 </button>
             </div>
         </div>
         <div class="row g-4 mb-3">
             <div class="col-md-6 col-sm-12 d-flex justify-content-center">
-                <button type="button" onclick="location.href='dictionary.php'" class="btn btn-primary btn-lg" style="width:400px; height:70px;">
+                <button type="button" onclick="location.href='dictionary_manage.php'" class="btn btn-success btn-lg" style="width:400px; height:70px;">
                     <i class="bi bi-book me-2"></i>Manage Dictionary
                 </button>
             </div>
             <div class="col-md-6 col-sm-12 d-flex justify-content-center">
-                <button type="button" onclick="location.href='blog_manage.php'" class="btn btn-primary btn-lg" style="width:400px; height:70px;">
+                <button type="button" onclick="location.href='blog_manage.php'" class="btn btn-success btn-lg" style="width:400px; height:70px;">
                     <i class="bi bi-journal-plus me-2"></i>Manage Blogs
                 </button>
             </div>
         </div>
         <div class="row g-4 mb-3">
             <div class="col-12 d-flex justify-content-center">
-                <button type="button" onclick="location.href='reports.php'" class="btn btn-primary btn-lg" style="width:400px; height:70px;">
+                <button type="button" onclick="location.href='reports.php'" class="btn btn-success btn-lg" style="width:400px; height:70px;">
                     <i class="bi bi-bar-chart-line me-2"></i>Reports
                 </button>
             </div>
@@ -81,7 +81,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-primary text-center text-white py-3 mt-auto">
+    <footer class="bg-success text-center text-white py-3 mt-auto">
         &copy; 2025 Suwoda Admin Panel. All rights reserved.
     </footer>
 
