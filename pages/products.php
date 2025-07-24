@@ -1,10 +1,19 @@
 <?php
 // Include necessary files
 require_once '../includes/dbconnect.php';
-require_once '../classes/productClass.php';
+
+class Product {
+    // Get all products with category names
+    public static function getAllProducts($conn) {
+        $query = "SELECT p.*, c.name as category_name FROM product p 
+                  LEFT JOIN category c ON p.category_id = c.category_id 
+                  ORDER BY p.product_id DESC";
+        return $conn->query($query);
+    }
+}
 
 // Get all products from database
-$products = Product::getAll($conn);
+$products = Product::getAllProducts($conn);
 ?>
 
 <!DOCTYPE html>

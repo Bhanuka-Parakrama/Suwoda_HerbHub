@@ -1,8 +1,23 @@
 <?php
 require_once '../includes/dbconnect.php';
-require_once '../classes/blogClass.php';
 
-$blogs = Blog::showDetail($conn);  // Get all blogs
+class Blog {
+    // Get all blogs from database
+    public static function getAllBlogs($conn) {
+        $query = "SELECT * FROM blog ORDER BY published_date DESC";
+        $result = $conn->query($query);
+
+        $blogs = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $blogs[] = $row;
+            }
+        }
+        return $blogs;
+    }
+}
+
+$blogs = Blog::getAllBlogs($conn);
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +51,7 @@ $blogs = Blog::showDetail($conn);  // Get all blogs
     <h2 class="text-center mb-5 section-title text-dark" style="font-size: 2rem;">Our Latest Blog Posts</h2>
     <div class="d-flex flex-row gap-4 overflow-auto pb-4">
 
-      <?php if ($blogs): ?>
+      <?php if (!empty($blogs)): ?>
         <?php foreach ($blogs as $blog): ?>
           <div class="card shadow card-hover" style="min-width: 220px; max-width: 350px;">
             <img src="<?php echo htmlspecialchars($blog['image']); ?>" class="card-img-top" alt="Blog Image">
