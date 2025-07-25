@@ -35,7 +35,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="../pages/index.php#categoryDetails">
+                    <a class="nav-link text-white" href="../pages/index.php#categories">
                         <i class="bi bi-grid-3x3-gap me-1"></i>Categories
                     </a>         
                 </li>
@@ -116,35 +116,24 @@
     </div>
 </div>
 
+<!--Language Translator-->
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+     new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'en,si,ta',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      multilanguagePage: true,
+      gaTrack: true
+    }, 'google_translate_element');
+}
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&hl=en"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
-
-<script type="text/javascript">
-  function googleTranslateElementInit() {
-    // Desktop version
-    new google.translate.TranslateElement({
-      pageLanguage: 'en',
-      includedLanguages: 'en,si,ta',
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }, 'google_translate_element');
-    
-    // Mobile version
-    new google.translate.TranslateElement({
-      pageLanguage: 'en',
-      includedLanguages: 'en,si,ta',
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }, 'google_translate_element_mobile');
-    
-    // Main translate section
-    new google.translate.TranslateElement({
-      pageLanguage: 'en',
-      includedLanguages: 'en,si,ta',
-      layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
-    }, 'google_translate_element_main');
-  }
-</script>
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <script>
 // Add active class to current page
