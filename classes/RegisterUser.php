@@ -1,6 +1,6 @@
 <?php
 
-require_once 'GuestUser.php';
+include '../classes/GuestUser.php'; 
 
 class RegisteredUser extends GuestUser {
     private $user_id;
@@ -18,6 +18,34 @@ class RegisteredUser extends GuestUser {
         $this->address = $address;
     }
 
+    // Instance method to match your login page usage
+    public function userLogin($conn, $email, $password) {
+        if (!$conn) {
+            return false;
+        }
+
+        $query = "SELECT * FROM user WHERE email = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 1) {
+            $user = $result->fetch_assoc();
+            if (password_verify($password, $user['password'])) {
+                $_SESSION['user_id'] = $user['user_id'];
+                $_SESSION['user_name'] = $user['name'];
+                $_SESSION['user_email'] = $user['email'];
+                $_SESSION['user_phone'] = $user['phone'];
+                $_SESSION['user_address'] = $user['address'];
+                
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Keep the static login method for backward compatibility
     public static function login($conn, $email, $password) {
         if (!$conn) {
             return ['success' => false, 'message' => 'Database connection failed'];

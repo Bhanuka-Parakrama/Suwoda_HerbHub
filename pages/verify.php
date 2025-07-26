@@ -65,7 +65,6 @@ if ($token) {
             text-align: center;
         }
         .success-icon {
-            color: #28a745;
             font-size: 4rem;
             margin-bottom: 20px;
         }
@@ -74,17 +73,8 @@ if ($token) {
             font-size: 4rem;
             margin-bottom: 20px;
         }
-        .btn-primary {
-            background-color: #0d6efd;
-            border-color: #0d6efd;
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #0b5ed7;
-            border-color: #0a58ca;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
-        }
+
+      
     </style>
 </head>
 
@@ -108,8 +98,8 @@ if ($token) {
                     <?php echo htmlspecialchars($error); ?>
                 </div>
                 <div class="mt-4">
-                    <a href="register_form.php" class="btn btn-secondary me-2">Register Again</a>
-                    <a href="login_form.php" class="btn btn-primary">Back to Login</a>
+                    <a href="registration.php" class="btn btn-secondary me-2">Register Again</a>
+                    <a href="login.php" class="btn btn-success">Back to Login</a>
                 </div>
             <?php endif; ?>
         </div>
