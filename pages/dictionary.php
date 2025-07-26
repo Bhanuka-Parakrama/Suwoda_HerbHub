@@ -1,7 +1,6 @@
 <?php
 include '../includes/dbconnect.php';
 
-// Get selected letter from GET
 $selected_letter = isset($_GET['letter']) ? $_GET['letter'] : '';
 
 $herbs = [];

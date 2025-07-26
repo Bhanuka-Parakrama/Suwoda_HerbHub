@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $admin = new Admin();
 
-    if ($admin->login($conn, $email, $password)) {
+    if ($admin->adminLogin($conn, $email, $password)) {
         header("Location: dashbord.php");
         exit();
     } else {
@@ -52,6 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
+     <header class="bg-success text-white py-2 text-center">
+        <h4 class="mb-0"><i class="bi bi-shield-lock me-2"></i>Admin</h4>
+    </header>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
@@ -66,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <?php if (!empty($error_message)): ?>
                     <div class="alert alert-danger" role="alert">
-                        <i class="bi bi-exclamation-triangle me-2"></i><?php echo htmlspecialchars($error_message); ?>
+                        <i class="bi bi-exclamation-triangle me-2"></i><?php echo($error_message); ?>
                     </div>
                 <?php endif; ?>
 
@@ -75,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email"
                                placeholder="Enter your email" required 
-                               value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" />
+                               value="<?php echo($_POST['email'] ?? ''); ?>" />
                     </div>
 
                     <div class="mb-3">
@@ -93,8 +97,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" 
-        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+<footer class="bg-success text-white text-center py-2 w-100 mt-auto" style="position:fixed; left:0; bottom:0;">
+    &copy; 2025 Suwoda HerbHub. All rights reserved.
+</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

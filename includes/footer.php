@@ -11,7 +11,7 @@
 </head> 
 <body>
     
-<footer class="footer bg-success text-light py-5 mt-auto">
+<footer class="footer bg-success text-light py-3 mt-auto" style="min-height:50px;">
     <div class="container">
         <div class="row">
             <!-- Brand Section -->
@@ -87,34 +87,28 @@
                             <i class="bi bi-bag me-2"></i>Products
                         </a>
                     </div>
-                                    
-                     <div class="mb-2">
-                      <a href="../pages/index.php#about" class="text-light text-decoration-none">
-                             <i class="bi bi-info-circle me-2"></i>About Us
-                      </a>
-                     
+                    <div class="mb-2">
+                        <a href="../pages/index.php#about" class="text-light text-decoration-none">
+                            <i class="bi bi-info-circle me-2"></i>About Us
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-        
         <!-- Bottom Footer -->
-        <hr class="my-4 border-light">
+        <hr class="my-1 border-light">
         <div class="row">
             <div class="col-12 text-center">
-                <p class="text-light mb-0">© 2025 Suwoda HerbHub. All rights reserved.</p>
-                <div class="mb-2">
-                        <a href="../admin/admin_login.php" class="text-light text-decoration-none">
-                            <i class="bi bi-shield-lock me-2"></i>Admin
-                        </a>
-                    </div>
+                <p class="text-light mb-0" style="font-size: 0.85rem;">© 2025 Suwoda HerbHub. All rights reserved.</p>
+                <div class="mb-0">
+                    <a href="../admin/admin_login.php" class="text-light text-decoration-none">
+                        <i class="bi bi-shield-lock me-2"></i>Admin
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </footer>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
- integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-
- </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
