@@ -14,7 +14,8 @@ if(isset($_POST['add_blog'])){
    
     if($_FILES['image']['name'] != ""){
         $filename = time() . "_" . $_FILES['image']['name']; 
-        
+        $upload_path = '../uploads/blogs/' . $filename;
+
         if (!file_exists('../uploads/blogs/')) {
             mkdir('../uploads/blogs/', 0777, true);
         }

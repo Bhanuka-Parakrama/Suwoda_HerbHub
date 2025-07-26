@@ -26,7 +26,23 @@ $blogs = $conn->query($sql);
             ?>
                 <div class="col-12 mb-5">
                     <div class="card h-100 shadow-sm border-success">
-                        <img src="<?php echo $blog['image']; ?>" class="card-img-top rounded-top" alt="Blog Image" style="height: 700px; object-fit: cover;">
+                        <?php
+                        $img_src = '';
+                        if (!empty($blog['image'])) {
+                            if (strpos($blog['image'], '../assets/images/uploads') === 0) {
+                                $img_src = $blog['image'];
+                            } else {
+                                $img_src = '../uploads/blogs/' . $blog['image'];
+                            }
+                        }
+                        ?>
+                        <?php if (!empty($img_src)): ?>
+                            <img src="<?php echo $img_src; ?>" class="card-img-top rounded-top" alt="Blog Image" style="height: 700px; object-fit: cover;">
+                        <?php else: ?>
+                            <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 300px;">
+                                No Image
+                            </div>
+                        <?php endif; ?>
                         <div class="card-body bg-light">
                             <h5 class="card-title text-success"><?php echo $blog['title']; ?></h5>
                             <p class="card-text">
