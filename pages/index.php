@@ -1,6 +1,6 @@
 <?php
-require_once '../includes/dbconnect.php'; 
-require_once '../classes/CategoryClass.php';
+include '../includes/dbconnect.php'; 
+include '../classes/CategoryClass.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -142,45 +142,47 @@ require_once '../classes/CategoryClass.php';
         </div>
     </div>
 
-<!-- Categories Section -->
-    <div id="categories" class="container mt-5 mb-5">
-        <div class="row">
-            <div class="col-12">
-                <h2 class="text-center text-success mb-5 display-6 fw-bold">Featured Herbal Categories</h2>
-            </div>
+    <!-- Categories Section -->
+<div id="categories" class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center text-success mb-5 display-6 fw-bold">Featured Herbal Categories</h2>
         </div>
-        <div class="row justify-content-center">
-            <?php
-            $categories = Category::getAllCategories($conn);
-            if (!empty($categories)) {
-                foreach ($categories as $category) {
-            ?>
-                    <div class="col-md-3 col-sm-6 mb-4">
-                        <div class="card h-100 shadow-sm border-0 rounded-3">
-                            <img src="../uploads/<?php echo $category['image']; ?>" 
-                                 class="card-img-top" 
-                                 alt="<?php echo $category['name']; ?>"
-                                 style="height: 250px; object-fit: cover;">
-                            <div class="card-body text-center d-flex flex-column">
-                                <h5 class="card-title text-success fw-bold mb-3">
-                                    <?php echo $category['name']; ?>
-                                </h5>
-                                <div class="mt-auto">
-                                    <a href="products.php" class="btn btn-outline-success btn-sm rounded-pill px-3">
-                                       View More
-                                    </a>
-                                </div>
+    </div>
+    <div class="row justify-content-center">
+        <?php
+        $categories = Category::getAllCategories($conn);
+        if (!empty($categories)) {
+            foreach ($categories as $category) {
+        ?>
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="card h-100 shadow-sm border-0 rounded-3">
+                        <img src="../uploads/<?php echo $category['image']; ?>" 
+                             class="card-img-top" 
+                             alt="<?php echo ($category['name']); ?>"
+                             style="height: 250px; object-fit: cover;">
+                        <div class="card-body text-center d-flex flex-column">
+                            <h5 class="card-title text-success fw-bold mb-3">
+                                <?php echo($category['name']); ?>
+                            </h5>
+                            <div class="mt-auto">
+                
+                                <a href="products.php?category_id=<?php echo $category['category_id']; ?>" 
+                                   class="btn btn-outline-success btn-sm rounded-pill px-3">
+                                   View More
+                                </a>
                             </div>
                         </div>
                     </div>
-            <?php
-                }
-            } else {
-                echo '<div class="col-12"><p class="text-danger text-center fs-5">No categories found.</p></div>';
+                </div>
+        <?php
             }
-            ?>
-        </div>
+        } else {
+            echo '<div class="col-12"><p class="text-danger text-center fs-5">No categories found.</p></div>';
+        }
+        ?>
     </div>
+</div>
 
 <!-- js for welcome banner-->
     <script>

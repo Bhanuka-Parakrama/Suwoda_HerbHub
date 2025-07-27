@@ -1,7 +1,13 @@
 <?php
 include '../includes/dbconnect.php';
 
-$sql = "SELECT p.*, c.name as category_name FROM product p LEFT JOIN category c ON p.category_id = c.category_id ORDER BY p.product_id DESC";
+$category_filter = "";
+if (isset($_GET['category_id']) && !empty($_GET['category_id'])) {
+    $category_id = intval($_GET['category_id']); // Sanitize the input
+    $category_filter = " WHERE p.category_id = $category_id";
+}
+
+$sql = "SELECT p.*, c.name as category_name FROM product p LEFT JOIN category c ON p.category_id = c.category_id" . $category_filter . " ORDER BY p.product_id DESC";
 $result = $conn->query($sql);
 ?>
 
@@ -17,10 +23,10 @@ $result = $conn->query($sql);
 <body>
     <?php include '../includes/header.php'; ?>
     
-    <div class="container" style="margin-top: 50px;">
+    <div class="container min-vh-100 d-flex flex-column" style="margin-top: 50px;">
         <h2 class="display-6 fw-bold text-success mb-3 text-center">Our Products</h2>
         
-        <div class="row">
+        <div class="row flex-grow-1">
             <?php
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
@@ -34,10 +40,10 @@ $result = $conn->query($sql);
                         <?php } ?>
                         
                         <div class="card-body">
-                            <h5 class="card-title text-success"><?php echo $row['product_name']; ?></h5>
-                            <p class="card-text"><?php echo $row['description']; ?></p>
+                            <h5 class="card-title text-success"><?php echo ($row['product_name']); ?></h5>
+                            <p class="card-text"><?php echo($row['description']); ?></p>
                             <p class="card-text">
-                                <span>Category: <?php echo $row['category_name']; ?></span>
+                                <span>Category: <?php echo($row['category_name']); ?></span>
                             </p>
                             <p class="card-text">
                                 <strong class="bg-warning">Price: LKR <?php echo $row['price']; ?></strong>
@@ -45,10 +51,10 @@ $result = $conn->query($sql);
                             <?php if($row['quantity'] > 0) { ?>
                                 <p class="text-success">In Stock (<?php echo $row['quantity']; ?> available)</p>
                                 <div class="d-flex gap-2">
-                                    <button class="btn btn-success btn-sm flex-fill" onclick="(<?php echo $row['product_id']; ?>)">
+                                    <button class="btn btn-success btn-sm flex-fill" onclick="addToCart(<?php echo $row['product_id']; ?>)">
                                         Add to Cart
                                     </button>
-                                    <button class="btn btn-warning btn-sm flex-fill" onclick="(<?php echo $row['product_id']; ?>)">
+                                    <button class="btn btn-warning btn-sm flex-fill" onclick="buyNow(<?php echo $row['product_id']; ?>)">
                                         Buy Now
                                     </button>
                                 </div>
@@ -70,8 +76,9 @@ $result = $conn->query($sql);
         </div>
     </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"></script>
-    
-  <?php include '../includes/footer.php'; ?>
+    <div class="mt-auto">
+        <?php include '../includes/footer.php'; ?>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
